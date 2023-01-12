@@ -1,18 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
-public class StateControllerBase : MonoBehaviour
+[System.Serializable]
+public abstract class StateControllerBase<T> where T : Enum
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
