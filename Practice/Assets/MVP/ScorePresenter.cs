@@ -57,6 +57,11 @@ namespace UniRxMVPSample
         {
             _model.AddScore(addScore);
         }
+
+        public void ResetScore()
+        {
+            _model.ResetScore();
+        }
     }
 
 }

@@ -15,6 +15,10 @@ namespace UniRxMVPSample
             {
                 _presenter.AddScore(_addScore);
             }
+            if(Input.GetMouseButtonDown(1))
+            {
+                _presenter.ResetScore();
+            }
         }
     }
 

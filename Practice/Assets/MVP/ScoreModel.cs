@@ -28,6 +28,11 @@ namespace UniRxMVPSample
             // .ValueでReactiveProperty<int>型の値にアクセスできる(代入、参照が可能)
             CurrentScore.Value += addScore;
         }
+
+        public void ResetScore()
+        {
+            CurrentScore.Value = 0;
+        }
     }
 }
 
