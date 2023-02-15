@@ -15,7 +15,9 @@ public class PlayerStateMachine : StateMachineBase
     public MoveState Move => _move;
     public JumpState Jump => _jump;
 
-    [SerializeField] PlayerController _controller;
+    PlayerController _controller;
+
+    public PlayerController Controller => _controller;
     public void Init(PlayerController playerController)
     {
         _controller = playerController;
