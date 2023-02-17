@@ -388,8 +388,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f475114d6bd0de4bb4a598ef9b5bae5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerStateMachine: {}
-  _text: {fileID: 239300890}
+  _playerStateMachine:
+    _idle:
+      text: {fileID: 239300890}
+    _move:
+      text: {fileID: 239300890}
 --- !u!1 &523794038
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,17 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [System.Serializable]
 public class MoveState : PlayerStateBase
 {
+
+    [SerializeField] Text text;
     public override void Enter()
     {
-        //_playerStateMachine.Controller.CanMove = true;
         Debug.Log("EnterMove");
+        text.text = "EnterIdle";
     }
     public override void Update()
     {
+        text.text = "Update Move";
+        Debug.Log("Update Move");
         if (!_playerStateMachine.Controller.Input.CanMove())
         {
             _playerStateMachine.TransitionTo(_playerStateMachine.Idle);
@@ -20,7 +25,7 @@ public class MoveState : PlayerStateBase
     }
     public override void Exit()
     {
-        //_playerStateMachine.Controller.CanMove = false;
         Debug.Log("ExitMove");
+        text.text = "ExitMove";
     }
 }
