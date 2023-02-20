@@ -17,11 +17,12 @@ public class MoveState : PlayerStateBase
     {
         text.text = "Update Move";
         Debug.Log("Update Move");
-        if (!_playerStateMachine.Controller.Input.CanMove())
-        {
-            _playerStateMachine.TransitionTo(_playerStateMachine.Idle);
-            return;
-        }
+        if (_playerStateMachine.Controller.Input.CanMove()) return;
+        _playerStateMachine.TransitionTo(_playerStateMachine.Idle);
+        //{
+        //    _playerStateMachine.TransitionTo(_playerStateMachine.Idle);
+        //    return;
+        //}
     }
     public override void Exit()
     {

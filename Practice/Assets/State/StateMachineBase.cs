@@ -4,6 +4,7 @@ using UnityEngine;
 [System.Serializable]
 public abstract class StateMachineBase
 {
+  
     public void Update()
     {
         if (_currentState != null)

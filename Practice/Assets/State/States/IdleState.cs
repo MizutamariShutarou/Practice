@@ -17,11 +17,11 @@ public class IdleState : PlayerStateBase
     {
         text.text = "Update Idle";
         Debug.Log("Update Idle");
-        if(_playerStateMachine.Controller.Input.CanMove())
-        {
-            _playerStateMachine.TransitionTo(_playerStateMachine.Move);
-            return;
-        }
+        if (_playerStateMachine.Controller.Input.CanMove() == false) return;
+        _playerStateMachine.TransitionTo(_playerStateMachine.Move);
+        //{
+        //    _playerStateMachine.TransitionTo(_playerStateMachine.Move);
+        //}
     }
     public override void Exit()
     {

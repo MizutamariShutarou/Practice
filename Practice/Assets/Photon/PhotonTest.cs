@@ -6,6 +6,7 @@ using Photon.Realtime;
 
 public class PhotonTest : MonoBehaviourPunCallbacks
 {
+    [SerializeField] GameObject _prefab;
     void Start()
     {
         PhotonNetwork.ConnectUsingSettings();    
@@ -21,12 +22,14 @@ public class PhotonTest : MonoBehaviourPunCallbacks
     {
         // "room"という名前のルームに参加する(ルームがなければ作成してから参加する)
         PhotonNetwork.JoinOrCreateRoom("room", new RoomOptions(), TypedLobby.Default);
+        Debug.Log("コネクト");
     }
 
     public override void OnJoinedRoom()
     {
         // キャラクターを生成する
-        GameObject go = PhotonNetwork.Instantiate("gameObject", Vector3.zero, Quaternion.identity, 0);
+        GameObject go = PhotonNetwork.Instantiate("Monster", Vector3.zero, Quaternion.identity, 0);
+        Debug.Log(go.name);
 
         // 自分だけが操作できるようにスクリプトを有効する
         MonsterScript monsterScript = go.GetComponent<MonsterScript>();
