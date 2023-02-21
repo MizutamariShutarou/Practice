@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlayerStateBase : IState
 {
-    [System.NonSerialized]
     protected PlayerStateMachine _playerStateMachine;
 
     public virtual void Init(PlayerStateMachine playerStateMachine)

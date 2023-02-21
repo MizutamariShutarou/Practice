@@ -12,7 +12,6 @@ public abstract class StateMachineBase
             _currentState.Update();
         }
     }
-    [NonSerialized]
     protected IState _currentState;
     public IState CurrentState { get => _currentState; }
 
