@@ -1,16 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class PlayerStateBase : IState
 {
     protected PlayerStateMachine _playerStateMachine;
     public virtual void Init(PlayerStateMachine playerStateMachine)
-    {
-        _playerStateMachine = playerStateMachine;
-    }
-
-    public PlayerStateBase(PlayerStateMachine playerStateMachine)
     {
         _playerStateMachine = playerStateMachine;
     }
