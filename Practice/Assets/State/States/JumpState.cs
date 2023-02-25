@@ -1,24 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class JumpState : PlayerStateBase
+public class JumpState : IState
 {
-    public override void Enter()
+    PlayerController _playerController;
+    public JumpState(PlayerController playerController)
+    {
+        _playerController = playerController;
+    }
+
+    public void Enter()
     {
         Debug.Log("EnterJump");
     }
-    public override void Update()
+    public void Update()
     {
-        Debug.Log(_playerStateMachine.Controller.Input.CanMove());
-        if (_playerStateMachine.Controller.Input.CanMove())
-        {
-            _playerStateMachine.TransitionTo(_playerStateMachine.Move);
-            return;
-        }
+        Debug.Log(_playerController.Input.CanMove());
     }
-    public override void Exit()
+    public void Exit()
     {
         Debug.Log("ExitJump");
     }

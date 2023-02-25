@@ -4,7 +4,6 @@ using UnityEngine.UI;
 [System.Serializable]
 public class MoveState : IState
 {
-    [System.NonSerialized]
     PlayerController _playerController;
     public MoveState(PlayerController playerController)
     {
@@ -24,11 +23,7 @@ public class MoveState : IState
         //    return;
         //}
         if (_playerController.Input.CanMove()) return;
-        _playerController.TransitionTo(_playerController.IdleState);
-        {
-            _playerController.TransitionTo(_playerController.IdleState);
-            return;
-        }
+        _playerController.StateMachine.TransitionTo(_playerController.IdleState);
     }
     public void Exit()
     {
