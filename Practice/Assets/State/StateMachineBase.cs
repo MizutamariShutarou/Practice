@@ -2,19 +2,21 @@ using System;
 using UnityEngine;
 
 [System.Serializable]
-public abstract class StateMachineBase
+public class StateMachineBase
 {
-    public void Update()
-    {
-        if (_currentState != null)
-        {
-            _currentState.Update();
-        }
-    }
     protected IState _currentState;
-    public IState CurrentState { get => _currentState; }
+    public IState CurrentState => _currentState;
 
     public event Action<IState, IState> OnStateChanged = default;
+    public void Initialize(IState startState)
+    {
+        _currentState = startState;
+        startState.Enter();
+
+        // ステート変化時に実行するアクション。
+        // 引数に最初のステートを渡す。
+        OnStateChanged?.Invoke(null, startState);
+    }
 
     /// <summary>
     /// ステートの遷移処理。引数に「次のステートの参照」を受け取る。
