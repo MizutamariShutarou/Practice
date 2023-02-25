@@ -4,8 +4,6 @@ using UnityEngine.UI;
 [System.Serializable]
 public class MoveState : IState
 {
-    [SerializeField] Text text;
-
     [System.NonSerialized]
     PlayerController _playerController;
     public MoveState(PlayerController playerController)
@@ -15,11 +13,9 @@ public class MoveState : IState
     public void Enter()
     {
         Debug.Log("EnterMove");
-        text.text = "EnterIdle";
     }
     public void Update()
     {
-        text.text = "Update Move";
         Debug.Log("Update Move");
         //if (_playerStateMachine.Controller.Input.CanMove()) return;
         //_playerStateMachine.TransitionTo(_playerStateMachine.Idle);
@@ -27,10 +23,15 @@ public class MoveState : IState
         //    _playerStateMachine.TransitionTo(_playerStateMachine.Idle);
         //    return;
         //}
+        if (_playerController.Input.CanMove()) return;
+        _playerController.TransitionTo(_playerController.IdleState);
+        {
+            _playerController.TransitionTo(_playerController.IdleState);
+            return;
+        }
     }
     public void Exit()
     {
         Debug.Log("ExitMove");
-        text.text = "ExitMove";
     }
 }
