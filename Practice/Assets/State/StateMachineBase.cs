@@ -17,22 +17,6 @@ public abstract class StateMachineBase
     public event Action<IState, IState> OnStateChanged = default;
 
     /// <summary>
-    /// 最初のステートを設定する。
-    /// </summary>
-    /// <param name="startState"></param>
-    protected void Initialize(IState startState)
-    {
-        StateInit();
-
-        _currentState = startState;
-        startState.Enter();
-
-        // ステート変化時に実行するアクション。
-        // 引数に最初のステートを渡す。
-        OnStateChanged?.Invoke(null, startState);
-    }
-
-    /// <summary>
     /// ステートの遷移処理。引数に「次のステートの参照」を受け取る。
     /// </summary>
     /// <param name="nextState"></param>
@@ -52,8 +36,4 @@ public abstract class StateMachineBase
         // 引数に「新しい現在ステート」を渡す。
         OnStateChanged?.Invoke(previousState, nextState);
     }
-    /// <summary>
-    /// 各ステートにOwnerを渡す。
-    /// </summary>
-    protected abstract void StateInit();
 }
