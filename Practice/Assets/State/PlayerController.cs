@@ -16,8 +16,7 @@ public class PlayerController : MonoBehaviour
 
     InputManager _input;
 
-    StateMachineBase _stateMachine;
-    public StateMachineBase StateMachine => _stateMachine;
+    public StateMachineBase StateMachine { get; private set; }
 
     [SerializeField] Text _text;
 
@@ -31,59 +30,25 @@ public class PlayerController : MonoBehaviour
     }
     void Start()
     {
-        _stateMachine.Initialize(_idleState);
+        StateMachine.TransitionTo(_idleState);
     }
 
     void Update()
     {
-        if (_stateMachine.CurrentState != null)
+        if (StateMachine.CurrentState != null)
         {
-            _stateMachine.CurrentState.Update();
+            StateMachine.CurrentState.Update();
         }
-        _text.text = _stateMachine.CurrentState.ToString();
+        _text.text = StateMachine.CurrentState.ToString();
         //_text.text = _playerStateMachine.CurrentState.ToString();
     }
-    /// <summary>
-    /// 最初のステートを設定する。
-    /// </summary>
-    /// <param name="startState"></param>
-    //protected void Initialize(IState startState)
-    //{
-    //    _machine.CurrentState = startState;
-    //    startState.Enter();
-
-    //    // ステート変化時に実行するアクション。
-    //    // 引数に最初のステートを渡す。
-    //    //_machine.OnStateChanged?.Invoke(null, startState);
-    //}
-
-    /// <summary>
-    /// ステートの遷移処理。引数に「次のステートの参照」を受け取る。
-    /// </summary>
-    /// <param name="nextState"></param>
-    //public void TransitionTo(IState nextState)
-    //{
-    //    if (nextState == null)
-    //    {
-    //        Debug.LogError($"引数に渡された {nextState} はnullです。遷移をキャンセルします。");
-    //        return;
-    //    }
-    //    var previousState = _machine.CurrentState;
-    //    _machine.CurrentState.Exit();      // 現在ステートの終了処理。
-    //    _machine.CurrentState = nextState; // 現在のステートの変更処理。
-    //    nextState.Enter();         // 変更された「新しい現在ステート」のEnter処理。
-
-    //    // ステート変更時のアクションを実行する。
-    //    // 引数に「新しい現在ステート」を渡す。
-    //    OnStateChanged?.Invoke(previousState, nextState);
-    //}
 
     // 各ステートの初期化
     // なんかforeachでまとめてインスタンス化とかできたら
     // ステートが増えても楽かも
     private void InitState()
     {
-        _stateMachine = new StateMachineBase();
+        StateMachine = new StateMachineBase();
 
         _idleState = new IdleState(this);
 
@@ -91,63 +56,4 @@ public class PlayerController : MonoBehaviour
 
         _jumpState = new JumpState(this);
     }
-
-    //void Update()
-    //{
-    //    if (_currentState != null)
-    //    {
-    //        _currentState.Update();
-    //    }
-    //    _text.text = _currentState.ToString();
-    //    //_text.text = _playerStateMachine.CurrentState.ToString();
-    //}
-
-
-    //protected IState _currentState;
-    //public IState CurrentState { get => _currentState; }
-
-    //public event Action<IState, IState> OnStateChanged = default;
-
-    ///// <summary>
-    ///// 最初のステートを設定する。
-    ///// </summary>
-    ///// <param name="startState"></param>
-    //protected void Initialize(IState startState)
-    //{
-    //    _currentState = startState;
-    //    startState.Enter();
-
-    //    // ステート変化時に実行するアクション。
-    //    // 引数に最初のステートを渡す。
-    //    OnStateChanged?.Invoke(null, startState);
-    //}
-
-    ///// <summary>
-    ///// ステートの遷移処理。引数に「次のステートの参照」を受け取る。
-    ///// </summary>
-    ///// <param name="nextState"></param>
-    //public void TransitionTo(IState nextState)
-    //{
-    //    if (nextState == null)
-    //    {
-    //        Debug.LogError($"引数に渡された {nextState} はnullです。遷移をキャンセルします。");
-    //        return;
-    //    }
-    //    var previousState = _currentState;
-    //    _currentState.Exit();      // 現在ステートの終了処理。
-    //    _currentState = nextState; // 現在のステートの変更処理。
-    //    nextState.Enter();         // 変更された「新しい現在ステート」のEnter処理。
-
-    //    // ステート変更時のアクションを実行する。
-    //    // 引数に「新しい現在ステート」を渡す。
-    //    OnStateChanged?.Invoke(previousState, nextState);
-    //}
-
-    //private void InitState()
-    //{
-    //    Debug.Log("各ステートをインスタンス化");
-    //    _idleState = new IdleState(this);
-
-    //    _moveState = new MoveState(this);
-    //}
 }
