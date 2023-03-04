@@ -14,18 +14,16 @@ public class PlayerController : MonoBehaviour
     public MoveState MoveState => _moveState;
     public JumpState JumpState => _jumpState;
 
-    InputManager _input;
-
     public StateMachineBase StateMachine { get; private set; }
 
     [SerializeField] Text _text;
 
+    [SerializeField] InputManager _input;
     public InputManager Input => _input;
 
 
     private void Awake()
     {
-        _input = GetComponent<InputManager>();
         InitState();
     }
     void Start()
