@@ -4,8 +4,7 @@ using UnityEngine;
 [System.Serializable]
 public class StateMachineBase
 {
-    protected IState _currentState;
-    public IState CurrentState => _currentState;
+    public IState CurrentState { get; private set; }
 
     public event Action<IState, IState> OnStateChanged = default;
     //public void Initialize(IState startState)
@@ -24,14 +23,14 @@ public class StateMachineBase
     /// <param name="nextState"></param>
     public void TransitionTo(IState nextState)
     {
-        var previousState = _currentState;
+        var previousState = CurrentState;
         // 初期化
         // _currentState(現在のステート)が何も設定されていなければ
         // 引数に最初のステートを渡す
-        if (_currentState == null)
+        if (CurrentState == null)
         {
             previousState = null;
-            _currentState = nextState;
+            CurrentState = nextState;
             nextState.Enter();
 
             OnStateChanged?.Invoke(previousState, nextState);
@@ -40,11 +39,11 @@ public class StateMachineBase
         // 遷移処理
         // _currentState(現在のステート)になにか設定されていたら
         // 引数に遷移先のステートを渡す
-        else if (_currentState != nextState)
+        else if (CurrentState != nextState)
         {
-            previousState = _currentState;
-            _currentState.Exit();      // 現在ステートの終了処理。
-            _currentState = nextState; // 現在のステートの変更処理。
+            previousState = CurrentState;
+            CurrentState.Exit();      // 現在ステートの終了処理。
+            CurrentState = nextState; // 現在のステートの変更処理。
             nextState.Enter();         // 変更された「新しい現在ステート」のEnter処理。
 
             OnStateChanged?.Invoke(previousState, nextState);
