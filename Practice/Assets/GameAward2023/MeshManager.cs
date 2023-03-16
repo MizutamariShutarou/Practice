@@ -61,19 +61,6 @@ public class MeshManager : MonoBehaviour
             Vector3 mousePos = Input.mousePosition;
             var worldPos = Camera.main.ScreenToWorldPoint(mousePos);
 
-            //foreach (var index in _myVertices)
-            //{
-            //    float dis = Vector3.Distance(worldPos, index);
-            //    // float dis = worldPos.y - index.y;
-            //    Debug.Log($"‚»‚ê‚¼‚ê‚Ì‹——£{dis}");
-            //    if (dis < _dis)
-            //    {
-            //        _dis = dis;
-            //        _closeMesh = index;
-            //        Debug.Log($"ˆê”Ô‹ß‚¢dis{_dis}");
-            //        Debug.Log($"ˆê”Ô‹ß‚¢_closeMesh{_closeMesh}");
-            //    }
-            //}
             for(int i = 0; i < _myVertices.Length; i++)
             {
                 float dis = Vector3.Distance(worldPos, _myVertices[i]);
