@@ -1,6 +1,6 @@
 public interface IState
 {
-    public abstract void Enter();
-    public abstract void Update();
-    public abstract void Exit();
+    public void Enter();
+    public void Update();
+    public void Exit();
 }

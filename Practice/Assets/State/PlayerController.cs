@@ -1,18 +1,18 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+[System.Serializable]
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] IdleState _idleState;
+    [SerializeField] Idle _idle;
 
-    [SerializeField] MoveState _moveState;
+    [SerializeField] Move _move;
 
-    [SerializeField] JumpState _jumpState;
+    [SerializeField] Jump _jump;
 
-
-    public IdleState IdleState => _idleState;
-    public MoveState MoveState => _moveState;
-    public JumpState JumpState => _jumpState;
+    public Idle Idle => _idle;
+    public Move Move => _move;
+    public Jump Jump => _jump;
 
     public StateMachineBase StateMachine { get; private set; }
 
@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour
     }
     void Start()
     {
-        StateMachine.TransitionTo(_idleState);
+        StateMachine.TransitionTo(_idle);
     }
 
     void Update()
@@ -48,10 +48,12 @@ public class PlayerController : MonoBehaviour
     {
         StateMachine = new StateMachineBase();
 
-        _idleState = new IdleState(this);
+        _idle = new Idle(this);
 
-        _moveState = new MoveState(this);
+        _move = new Move(this);
 
-        _jumpState = new JumpState(this);
+        _jump = new Jump(this);
     }
+
+
 }
