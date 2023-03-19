@@ -6,6 +6,7 @@ public class MeshManager : MonoBehaviour
     private Mesh _myMesh;
     private Vector3[] _myVertices = new Vector3[4];
     private int[] _myTriangles = new int[6];
+    private int _indexNum = default;
     private float _width = 2;
     private float _hight = 2;
 
@@ -68,12 +69,16 @@ public class MeshManager : MonoBehaviour
                 {
                     _dis = dis;
                     _closeMesh = _myVertices[i];
-
-                    float dis2 = worldPos.y - _closeMesh.y;
-
-                    _myVertices[i] += new Vector3(0, dis2, 0);
+                    _indexNum = i;
+                    // _myVertices[i] += new Vector3(0, dis2, 0);
+                    Debug.Log(_myVertices[i]);
                 }
             }
+
+            float dis2 = worldPos.y - _closeMesh.y;
+            _closeMesh += new Vector3(0, dis2, 0);
+            _myVertices[_indexNum] += _closeMesh;
+
             Debug.Log($"ç∑ï™Çë´ÇµÇΩ{_closeMesh.y}");
 
             _myMesh.SetVertices(_myVertices);
