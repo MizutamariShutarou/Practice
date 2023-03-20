@@ -75,11 +75,12 @@ public class MeshManager : MonoBehaviour
                 }
             }
 
-            float dis2 = worldPos.y - _closeMesh.y;
-            _closeMesh += new Vector3(0, dis2, 0);
-            _myVertices[_indexNum] += _closeMesh;
+            float disX = worldPos.x - _closeMesh.x;
+            float disY = worldPos.y - _closeMesh.y;
+            _closeMesh -= new Vector3(disX, disY, 0);
+            _myVertices[_indexNum] = _closeMesh;
 
-            Debug.Log($"·•ª‚ğ‘«‚µ‚½{_closeMesh.y}");
+            Debug.Log($"ˆê”Ô‹ß‚¢’¸“_{_indexNum}‚É{disX}‚Æ{disY}‚ğ‘«‚µ‚½{_myVertices[_indexNum].y}");
 
             _myMesh.SetVertices(_myVertices);
             _dis = 1000f;
