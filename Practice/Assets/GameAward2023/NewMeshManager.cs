@@ -15,7 +15,7 @@ public class NewMeshManager : MonoBehaviour
     [SerializeField, Tooltip("中心のy座標")]
     private float _y0 = 0f;
 
-    [SerializeField, Tooltip("大きさ"), Range(1, 10)] 
+    [SerializeField, Tooltip("大きさ"), Range(1, 10)]
     private float _radius = 2f;
 
     private int _indexNum = default;
@@ -30,7 +30,7 @@ public class NewMeshManager : MonoBehaviour
         _myMesh = new Mesh();
 
         _myVertices = new Vector3[_nVertices];
-       
+
         Vector3[] myNormals = new Vector3[_nVertices];
 
         // 一辺当たりの中心角の 1 / 2
@@ -90,7 +90,7 @@ public class NewMeshManager : MonoBehaviour
         {
             Vector3 mousePos = Input.mousePosition;
             var worldPos = Camera.main.ScreenToWorldPoint(mousePos);
-            
+
             for (int i = 0; i < _myVertices.Length; i++)
             {
                 float dis = Vector3.Distance(worldPos, _myVertices[i]);
@@ -105,12 +105,20 @@ public class NewMeshManager : MonoBehaviour
 
             float disX = worldPos.x - _closeMesh.x;
             float disY = worldPos.y - _closeMesh.y;
-            _closeMesh -= new Vector3(disX, disY, 0);
-            _myVertices[_indexNum] = _closeMesh;
 
-            Debug.Log($"一番近い頂点{_indexNum}に{disX}と{disY}を足した{_myVertices[_indexNum].y}");
+            if (disX < _radius && disY < _radius)
+            {
+                _closeMesh -= new Vector3(disX, disY, 0);
+                _myVertices[_indexNum] = _closeMesh;
 
-            _myMesh.SetVertices(_myVertices);
+                Debug.Log($"一番近い頂点{_indexNum}に{disX}と{disY}を足した{_myVertices[_indexNum].y}");
+
+                _myMesh.SetVertices(_myVertices);
+            }
+            else
+            {
+                Debug.Log($"叩いた場所が一番近い頂点{_indexNum}から離れすぎてます");
+            }
             _dis = 1000f;
         }
 
