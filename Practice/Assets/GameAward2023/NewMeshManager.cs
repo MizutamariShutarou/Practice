@@ -47,8 +47,9 @@ public class NewMeshManager : MonoBehaviour
             // 下側の頂点の位置と法線
             _myVertices[i].Set(_x0 - x, _y0 - y, 0);
             myNormals[i] = Vector3.forward;
+            i++;
             // 最後の頂点を生成したら終了
-            if (i++ >= _nVertices) break;
+            if (i >= _nVertices) break;
             // 上側の頂点の位置と法線
             _myVertices[i].Set(_x0 - x, _y0 + y, 0);
             myNormals[i] = Vector3.forward;
@@ -70,8 +71,9 @@ public class NewMeshManager : MonoBehaviour
             myTriangles[firstI + 0] = i;
             myTriangles[firstI + 1] = i + 1;
             myTriangles[firstI + 2] = i + 2;
+            i++;
             // 最後の頂点番号を格納したら終了
-            if (++i >= nPolygons) break;
+            if (i >= nPolygons) break;
             // ２つ目の三角形の頂点番号
             myTriangles[firstI + 3] = i + 2;
             myTriangles[firstI + 4] = i + 1;
