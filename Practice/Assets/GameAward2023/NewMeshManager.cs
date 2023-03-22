@@ -5,6 +5,7 @@ public class NewMeshManager : MonoBehaviour
     private MeshFilter _meshFilter;
     private Mesh _myMesh;
     private Vector3[] _myVertices = default;
+    // private float[] _radiuses;
 
     [SerializeField, Tooltip("頂点数")]
     private int _nVertices = 6;
@@ -20,6 +21,8 @@ public class NewMeshManager : MonoBehaviour
 
     private int _indexNum = default;
 
+    // private int _radiusIndexNum = default;
+
     private float _dis = 1000f;
 
     Vector3 _closeMesh;
@@ -28,6 +31,7 @@ public class NewMeshManager : MonoBehaviour
     {
         _meshFilter = gameObject.GetComponent<MeshFilter>();
         _myMesh = new Mesh();
+        // _radiuses = new float[_nVertices];
 
         _myVertices = new Vector3[_nVertices];
 
@@ -35,6 +39,12 @@ public class NewMeshManager : MonoBehaviour
 
         // 一辺当たりの中心角の 1 / 2
         float halfStep = Mathf.PI / _nVertices;
+
+        /*for(int i = 0; i < _nVertices; i++)
+        {
+            _radiuses[i] = _radius;
+            Debug.Log(_radiuses[i]);
+        }*/
 
         for (int i = 0; i < _nVertices; i++)
         {
@@ -86,6 +96,11 @@ public class NewMeshManager : MonoBehaviour
     }
     void Update()
     {
+        // このやり方はダメでした
+        /*if (_radiuses[_radiusIndexNum] <= 0)
+        {
+            _radiuses[_radiusIndexNum] = 0;
+        }*/
         if (Input.GetMouseButtonDown(0))
         {
             Vector3 mousePos = Input.mousePosition;
@@ -99,19 +114,23 @@ public class NewMeshManager : MonoBehaviour
                     _dis = dis;
                     _closeMesh = _myVertices[i];
                     _indexNum = i;
+                    // _radiusIndexNum = i;
                     Debug.Log(_myVertices[i]);
+                    // Debug.Log(_radiuses[i]);
                 }
             }
 
             float disX = worldPos.x - _closeMesh.x;
             float disY = worldPos.y - _closeMesh.y;
 
-            if (disX < _radius && disY < _radius)
+            if (disX < _radius && disY < _radius)/*disX < _radiuses[_radiusIndexNum] && disY < _radiuses[_radiusIndexNum]*/
             {
                 _closeMesh -= new Vector3(disX, disY, 0);
                 _myVertices[_indexNum] = _closeMesh;
+                // _radiuses[_radiusIndexNum] -= 0.1f;
 
                 Debug.Log($"一番近い頂点{_indexNum}に{disX}と{disY}を足した{_myVertices[_indexNum].y}");
+                // Debug.Log($"一番近い頂点{_indexNum}が反応する距離は{_radiuses[_radiusIndexNum]}です");
 
                 _myMesh.SetVertices(_myVertices);
             }
@@ -121,6 +140,5 @@ public class NewMeshManager : MonoBehaviour
             }
             _dis = 1000f;
         }
-
     }
 }
