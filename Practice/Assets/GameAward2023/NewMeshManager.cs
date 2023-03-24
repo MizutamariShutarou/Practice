@@ -40,11 +40,11 @@ public class NewMeshManager : MonoBehaviour
         // 一辺当たりの中心角の 1 / 2
         float halfStep = Mathf.PI / _nVertices;
 
-        /*for(int i = 0; i < _nVertices; i++)
-        {
-            _radiuses[i] = _radius;
-            Debug.Log(_radiuses[i]);
-        }*/
+        //for(int i = 0; i < _nVertices; i++)
+        //{
+        //    _radiuses[i] = _radius;
+        //    Debug.Log(_radiuses[i]);
+        //}
 
         for (int i = 0; i < _nVertices; i++)
         {
@@ -96,11 +96,6 @@ public class NewMeshManager : MonoBehaviour
     }
     void Update()
     {
-        // このやり方はダメでした
-        /*if (_radiuses[_radiusIndexNum] <= 0)
-        {
-            _radiuses[_radiusIndexNum] = 0;
-        }*/
         if (Input.GetMouseButtonDown(0))
         {
             Vector3 mousePos = Input.mousePosition;
@@ -114,20 +109,30 @@ public class NewMeshManager : MonoBehaviour
                     _dis = dis;
                     _closeMesh = _myVertices[i];
                     _indexNum = i;
-                    // _radiusIndexNum = i;
+                    //_radiusIndexNum = i;
+
                     Debug.Log(_myVertices[i]);
-                    // Debug.Log(_radiuses[i]);
+                    //Debug.Log(_radiuses[i]);
                 }
             }
 
+            float dis2 = Vector3.Distance(worldPos, _myVertices[_indexNum]);
             float disX = worldPos.x - _closeMesh.x;
             float disY = worldPos.y - _closeMesh.y;
 
-            if (disX < _radius && disY < _radius)/*disX < _radiuses[_radiusIndexNum] && disY < _radiuses[_radiusIndexNum]*/
+            if (disX < _radius && disY < _radius /*disX < _radiuses[_radiusIndexNum] && disY < _radiuses[_radiusIndexNum]
+                    dis2 < _radius*/)
             {
                 _closeMesh -= new Vector3(disX, disY, 0);
                 _myVertices[_indexNum] = _closeMesh;
                 // _radiuses[_radiusIndexNum] -= 0.1f;
+
+                //if (_radiuses[_radiusIndexNum] <= 0)
+                //{
+                //    _radiuses[_radiusIndexNum] = 0.02f;
+                //    Debug.Log($"一番近い頂点{_indexNum}が反応する距離が最小値です");
+
+                //}
 
                 Debug.Log($"一番近い頂点{_indexNum}に{disX}と{disY}を足した{_myVertices[_indexNum].y}");
                 // Debug.Log($"一番近い頂点{_indexNum}が反応する距離は{_radiuses[_radiusIndexNum]}です");
