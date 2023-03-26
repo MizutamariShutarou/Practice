@@ -107,24 +107,25 @@ public class NewMeshManager : MonoBehaviour
                 if (dis < _dis)
                 {
                     _dis = dis;
-                    _closeMesh = _myVertices[i];
                     _indexNum = i;
                     //_radiusIndexNum = i;
 
-                    Debug.Log(_myVertices[i]);
-                    //Debug.Log(_radiuses[i]);
+                    Debug.Log($"iは{i}一番近い頂点{_indexNum}の座標は{_myVertices[_indexNum]}");
                 }
             }
 
             float dis2 = Vector3.Distance(worldPos, _myVertices[_indexNum]);
-            float disX = worldPos.x - _closeMesh.x;
-            float disY = worldPos.y - _closeMesh.y;
+            //float disX = worldPos.x - _closeMesh.x;
+            //float disY = worldPos.y - _closeMesh.y;
+            float disX = worldPos.x - _myVertices[_indexNum].x;
+            float disY = worldPos.y - _myVertices[_indexNum].y;
 
-            if (disX < _radius && disY < _radius /*disX < _radiuses[_radiusIndexNum] && disY < _radiuses[_radiusIndexNum]
+            if (Mathf.Abs(disX) < _radius && Mathf.Abs(disY) < _radius /*disX < _radiuses[_radiusIndexNum] && disY < _radiuses[_radiusIndexNum]
                     dis2 < _radius*/)
             {
-                _closeMesh -= new Vector3(disX, disY, 0);
-                _myVertices[_indexNum] = _closeMesh;
+                Debug.Log($"disX = {disX}, disY = {disY}");
+                _myVertices[_indexNum] -= new Vector3(disX, disY, 0);
+                //_myVertices[_indexNum] = _closeMesh;
                 // _radiuses[_radiusIndexNum] -= 0.1f;
 
                 //if (_radiuses[_radiusIndexNum] <= 0)
@@ -134,7 +135,7 @@ public class NewMeshManager : MonoBehaviour
 
                 //}
 
-                Debug.Log($"一番近い頂点{_indexNum}に{disX}と{disY}を足した{_myVertices[_indexNum].y}");
+                Debug.Log($"一番近い頂点{_indexNum}に{disX}と{disY}を足した{_myVertices[_indexNum]}");
                 // Debug.Log($"一番近い頂点{_indexNum}が反応する距離は{_radiuses[_radiusIndexNum]}です");
 
                 _myMesh.SetVertices(_myVertices);
