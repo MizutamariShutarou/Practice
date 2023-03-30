@@ -474,6 +474,7 @@ MonoBehaviour:
   _x0: 0
   _y0: -2
   _radius: 1.5
+  path: Assets/TestMesh.asset
 --- !u!114 &1587099559
 MonoBehaviour:
   m_ObjectHideFlags: 0

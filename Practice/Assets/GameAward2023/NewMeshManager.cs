@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEditor;
 
 public class NewMeshManager : MonoBehaviour
 {
@@ -32,6 +33,17 @@ public class NewMeshManager : MonoBehaviour
     // private int _radiusIndexNum = default;
 
     private float _dis = 1000f;
+
+    [SerializeField] private string path;
+
+    [ContextMenu("Make mesh from model")]
+    public void MakeMesh()
+    {
+#if UNITY_EDITOR
+        AssetDatabase.CreateAsset(_meshFilter.mesh, path);
+        AssetDatabase.SaveAssets();
+#endif
+    }
     void Start()
     {
         _meshFilter = gameObject.GetComponent<MeshFilter>();
@@ -164,6 +176,8 @@ public class NewMeshManager : MonoBehaviour
             // Debug.Log($"ˆê”Ô‹ß‚¢’¸“_{_indexNum}‚ª”½‰‚·‚é‹——£‚Í{_radiuses[_radiusIndexNum]}‚Å‚·");
 
             _myMesh.SetVertices(_myVertices);
+
+            MakeMesh();
         }
         else
         {
@@ -171,6 +185,5 @@ public class NewMeshManager : MonoBehaviour
             Debug.Log($"’@‚¢‚½êŠ‚ªˆê”Ô‹ß‚¢’¸“_{_indexNum}‚©‚ç—£‚ê‚·‚¬‚Ä‚Ü‚·");
         }
         _dis = 1000f;
-
     }
 }
