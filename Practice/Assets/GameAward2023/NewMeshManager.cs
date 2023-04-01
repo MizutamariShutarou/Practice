@@ -1,5 +1,5 @@
-using UnityEngine;
 using UnityEditor;
+using UnityEngine;
 
 public class NewMeshManager : MonoBehaviour
 {
@@ -138,7 +138,7 @@ public class NewMeshManager : MonoBehaviour
         }
 
         // 以下変数名を考えたい
-        
+
         // タップ位置と近い頂点との距離(to)
         float toDis = Vector3.Distance(worldPos, new Vector3(_x0, _y0, 0));
 
@@ -148,11 +148,11 @@ public class NewMeshManager : MonoBehaviour
         float disX = worldPos.x - _myVertices[_indexNum].x;
         float disY = worldPos.y - _myVertices[_indexNum].y;
 
-        if(toDis <= ioDis)
+        if (toDis <= ioDis)
         {
             Debug.Log("内側");
         }
-        else if(toDis > ioDis)
+        else if (toDis > ioDis)
         {
             Debug.Log("外側");
         }
