@@ -177,7 +177,7 @@ public class NewMeshManager : MonoBehaviour
 
             _myMesh.SetVertices(_myVertices);
 
-            MakeMesh();
+            //MakeMesh();
         }
         else
         {
