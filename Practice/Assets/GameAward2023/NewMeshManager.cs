@@ -3,8 +3,11 @@ using UnityEngine;
 
 public class NewMeshManager : MonoBehaviour
 {
-    private MeshFilter _meshFilter;
+    private static MeshFilter _meshFilter = default;
+    public static MeshFilter MeshFilter => _meshFilter;
+
     private Mesh _myMesh;
+
     private static Vector3[] _myVertices = default;
     public static Vector3[] MyVertices => _myVertices;
 
@@ -37,13 +40,7 @@ public class NewMeshManager : MonoBehaviour
     [SerializeField] private string path;
 
     [ContextMenu("Make mesh from model")]
-    public void MakeMesh()
-    {
-#if UNITY_EDITOR
-        AssetDatabase.CreateAsset(_meshFilter.mesh, path);
-        AssetDatabase.SaveAssets();
-#endif
-    }
+  
     void Start()
     {
         _meshFilter = gameObject.GetComponent<MeshFilter>();

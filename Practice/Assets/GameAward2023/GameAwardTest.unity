@@ -474,7 +474,7 @@ MonoBehaviour:
   _x0: 0
   _y0: -2
   _radius: 1.5
-  path: Assets/TestMesh.asset
+  path: Assets/GameAward2023/TestMesh.asset
 --- !u!114 &1587099559
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -540,6 +540,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51e40c67c837ad542bed83649675227d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  path: Assets/GameAward2023/TestMesh.asset
 --- !u!114 &1597761838
 MonoBehaviour:
   m_ObjectHideFlags: 0
