@@ -5,7 +5,7 @@ using VContainer.Unity;
 /// <summary>
 /// VContainer—p‚ÌContainerƒNƒ‰ƒX
 /// </summary>
-public class TestLifetimeScope : LifetimeScope
+public class TestLifeTimeScope : LifetimeScope
 {
     protected override void Configure(IContainerBuilder builder)
     {
