@@ -14,4 +14,16 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/GameAward2023/GameAwardTest.unity
     guid: 3f4df2dd707ba184da43821e7c1f1470
+  - enabled: 1
+    path: Assets/MVP/MVP.unity
+    guid: 65eabae2dd630ab4385c863684d70096
+  - enabled: 1
+    path: Assets/NCMB/LogIn.unity
+    guid: 54cf5df2ce269f84d8afaef8fa977546
+  - enabled: 1
+    path: Assets/Scenes/Member/LogOut.unity
+    guid: 8f8b3d6555b72405bbcc00a593372d3b
+  - enabled: 1
+    path: Assets/NCMB/Score.unity
+    guid: 16cb0bcc73b5ef449b609b6142678485
   m_configObjects: {}
