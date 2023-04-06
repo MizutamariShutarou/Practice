@@ -72,7 +72,7 @@ public class LogInManager : MonoBehaviour
 
         // currentPlayerを毎フレーム監視し、ログインが完了したら
         if (FindObjectOfType<UserAuth>().currentPlayer() != null)
-            Application.LoadLevel("MVP");
+            Application.LoadLevel("Score");
 
     }
 
