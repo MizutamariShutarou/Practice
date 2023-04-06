@@ -32,7 +32,7 @@ public class Logout : MonoBehaviour
 				UnityEngine.Debug.Log ("ログアウトに失敗: " + e.ErrorMessage);
 			} else {
 				UnityEngine.Debug.Log ("ログアウトに成功");
-				SceneManager.LoadScene ("Loginsignin");
+				SceneManager.LoadScene ("LogIn");
 			}
 		});
 
