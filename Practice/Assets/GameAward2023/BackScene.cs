@@ -6,6 +6,7 @@ public class BackScene : MonoBehaviour
 {
     public void Change()
     {
+        NewMeshManager._isFinished = false;
         SceneManager.LoadScene("GameAwardTest");
     }
 }
