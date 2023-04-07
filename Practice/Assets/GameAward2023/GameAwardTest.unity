@@ -384,7 +384,6 @@ GameObject:
   - component: {fileID: 1587099556}
   - component: {fileID: 1587099555}
   - component: {fileID: 1587099558}
-  - component: {fileID: 1587099559}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -450,7 +449,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1587099553}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 90}
+  m_LocalPosition: {x: 0, y: 0, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -474,19 +473,7 @@ MonoBehaviour:
   _x0: 0
   _y0: -2
   _radius: 1.5
-  path: Assets/GameAward2023/TestMesh.asset
---- !u!114 &1587099559
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1587099553}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9fd93584882eb5e4381c50d2bbe200b1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  _path: 
 --- !u!1 &1597761835
 GameObject:
   m_ObjectHideFlags: 0
@@ -499,7 +486,6 @@ GameObject:
   - component: {fileID: 1597761840}
   - component: {fileID: 1597761839}
   - component: {fileID: 1597761838}
-  - component: {fileID: 1597761837}
   m_Layer: 5
   m_Name: Finish
   m_TagString: Untagged
@@ -528,19 +514,6 @@ RectTransform:
   m_AnchoredPosition: {x: -784.1, y: -473.6}
   m_SizeDelta: {x: 300, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1597761837
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1597761835}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51e40c67c837ad542bed83649675227d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  path: Assets/GameAward2023/TestMesh.asset
 --- !u!114 &1597761838
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -585,9 +558,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1597761837}
-        m_TargetAssemblyTypeName: SceneChange, Assembly-CSharp
-        m_MethodName: Change
+      - m_Target: {fileID: 1587099558}
+        m_TargetAssemblyTypeName: NewMeshManager, Assembly-CSharp
+        m_MethodName: OnSceneChange
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
