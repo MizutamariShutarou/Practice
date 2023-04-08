@@ -1,4 +1,6 @@
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -18,6 +20,7 @@ public class SaveMesh : MonoBehaviour
     [System.Obsolete]
     public void Change()
     {
+#if UNITY_EDITOR
         if(_num == 0)
         {
             _meshName = _name + $"{_num}";
@@ -36,6 +39,7 @@ public class SaveMesh : MonoBehaviour
         PrefabUtility.CreatePrefab("Assets/Resources/" + _meshName + ".prefab", _object);
 
         AssetDatabase.SaveAssets();
+#endif 
 
         SceneManager.LoadScene("BattleSample");
     }

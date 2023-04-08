@@ -1,4 +1,6 @@
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -117,6 +119,7 @@ public class NewMeshManager : MonoBehaviour
         _myMesh.SetTriangles(_myTriangles, 0);
 
         _meshFilter.mesh = _myMesh;
+        _go = this.gameObject;
     }
     void Update()
     {
@@ -202,7 +205,8 @@ public class NewMeshManager : MonoBehaviour
     public void OnSceneChange()
     {
         _isFinished = true;
-        _go = this.gameObject;
+
+#if UNITY_EDITOR
         if (_num == 0)
         {
             _meshName = _name + $"{_num}";
@@ -217,11 +221,11 @@ public class NewMeshManager : MonoBehaviour
             AssetDatabase.CreateAsset(_meshFilter.mesh, _path);
             _num++;
         }
-
-        PrefabUtility.CreatePrefab("Assets/Resources/" + _meshName + ".prefab", _go);
-
         AssetDatabase.SaveAssets();
 
+        PrefabUtility.CreatePrefab("Assets/Resources/" + _meshName + ".prefab", _go);
+#endif
         SceneManager.LoadScene("BattleSample");
+        SaveManager.Save();
     }
 }
