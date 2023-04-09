@@ -3,12 +3,13 @@ using UnityEngine;
 using Cysharp.Threading.Tasks;
 using System.Threading;
 
-public class MeshActive : MonoBehaviour
+/*public class MeshActive : MonoBehaviour
 {
     [SerializeField]
     private GameObject _panel;
     private MeshFilter _meshFilter;
     private Mesh _myMesh;
+
 
     private void Start()
     {
@@ -23,8 +24,6 @@ public class MeshActive : MonoBehaviour
     {
         try
         {
-            var obj = (GameObject)Resources.Load(NewMeshManager.MeshName);
-            Instantiate(obj, new Vector3(0, 0, 0), Quaternion.identity);
             _meshFilter.mesh = _myMesh;
         }
 
@@ -41,4 +40,4 @@ public class MeshActive : MonoBehaviour
             await UniTask.CompletedTask;
         }
     }
-}
+}*/

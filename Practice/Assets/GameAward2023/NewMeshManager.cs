@@ -7,10 +7,12 @@ using UnityEngine.SceneManagement;
 public class NewMeshManager : MonoBehaviour
 {
     private GameObject _go;
-    private static MeshFilter _meshFilter = default;
-    public static MeshFilter MeshFilter => _meshFilter;
+    private MeshFilter _meshFilter = default;
+    public MeshFilter MeshFilter => _meshFilter;
 
-    public static Mesh _myMesh;
+    private Mesh _myMesh;
+
+    public Mesh MyMesh => _myMesh;
 
     private Vector3[] _myVertices = default;
 
@@ -51,10 +53,14 @@ public class NewMeshManager : MonoBehaviour
 
     public static bool _isFinished;
 
+    private SaveData _saveData;
+
+
     [ContextMenu("Make mesh from model")]
   
     void Start()
     {
+        SaveManager.Load();
         _meshFilter = gameObject.GetComponent<MeshFilter>();
         _myMesh = new Mesh();
         // _radiuses = new float[_nVertices];
@@ -119,7 +125,6 @@ public class NewMeshManager : MonoBehaviour
         _myMesh.SetTriangles(_myTriangles, 0);
 
         _meshFilter.mesh = _myMesh;
-        _go = this.gameObject;
     }
     void Update()
     {
@@ -204,27 +209,28 @@ public class NewMeshManager : MonoBehaviour
     [System.Obsolete]
     public void OnSceneChange()
     {
-        _isFinished = true;
+//        _isFinished = true;
+//        _go = this.gameObject;
+//#if UNITY_EDITOR
+//        if (_num == 0)
+//        {
+//            _meshName = _name + $"{_num}";
+//            _path = "Assets/Resources/MeshFolder/" + _meshName + ".asset";
+//            AssetDatabase.CreateAsset(_meshFilter.mesh, _path);
+//            _num++;
+//        }
+//        else if (_num >= 1)
+//        {
+//            _meshName = _name + $"{_num}";
+//            _path = "Assets/Resources/MeshFolder/" + _meshName + ".asset";
+//            AssetDatabase.CreateAsset(_meshFilter.mesh, _path);
+//            _num++;
+//        }
 
-#if UNITY_EDITOR
-        if (_num == 0)
-        {
-            _meshName = _name + $"{_num}";
-            _path = "Assets/Resources/MeshFolder/" + _meshName + ".asset";
-            AssetDatabase.CreateAsset(_meshFilter.mesh, _path);
-            _num++;
-        }
-        else if (_num >= 1)
-        {
-            _meshName = _name + $"{_num}";
-            _path = "Assets/Resources/MeshFolder/" + _meshName + ".asset";
-            AssetDatabase.CreateAsset(_meshFilter.mesh, _path);
-            _num++;
-        }
-        AssetDatabase.SaveAssets();
+//        PrefabUtility.CreatePrefab("Assets/Resources/" + _meshName + ".prefab", _go);
 
-        PrefabUtility.CreatePrefab("Assets/Resources/" + _meshName + ".prefab", _go);
-#endif
+//        AssetDatabase.SaveAssets();
+//#endif
         SceneManager.LoadScene("BattleSample");
         SaveManager.Save();
     }
