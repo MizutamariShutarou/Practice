@@ -5,13 +5,16 @@ using UnityEngine;
 [System.Serializable]
 public class SaveData
 {
-    [System.Serializable]
+    public string _prefabName = default;
+    public Mesh _mesh = default;
+    public MeshFilter _meshFilter = default;
+    /*[System.Serializable]
     public class WeaponData
     {
-        public string PrefabName;
-        public Mesh _mesh;
-        public MeshFilter _meshFilter;
+        public string _prefabName = default;
+        public Mesh _mesh = default;
+        public MeshFilter _meshFilter = default;
     }
 
-    public List<WeaponData> WeaponList = new List<WeaponData>();
+    public List<WeaponData> WeaponList = new List<WeaponData>();*/
 }
