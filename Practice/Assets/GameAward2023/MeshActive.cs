@@ -10,19 +10,30 @@ public class MeshActive : MonoBehaviour
     private GameObject _panel;
     private MeshFilter _meshFilter;
     private Mesh _myMesh;
-
+    private MeshRenderer _myRenderer;
     DataManager _dataManager;
 
 
     private void Start()
     {
         _panel.SetActive(false);
-        _meshFilter = gameObject.GetComponent<MeshFilter>();
+
+        //_meshFilter = GetComponent<MeshFilter>();
+        //_myMesh = new Mesh();
+        //_meshFilter.sharedMesh = _myMesh;
+        //_meshFilter.mesh = _myMesh;
+
         _myMesh = new Mesh();
+        _myMesh.vertices = NewMeshManager.MyVertices;
+        _myMesh.triangles = NewMeshManager.MyTriangles;
+        // _myMesh = NewMeshManager.MyMesh;
+        GameObject go = new GameObject("MeshObj");
+        _meshFilter = go.AddComponent<MeshFilter>();
+        _meshFilter.mesh = _myMesh;
+        _myRenderer = go.AddComponent<MeshRenderer>();
+        // _myRenderer.material = NewMeshManager._meshMaterial;
 
-        _myMesh.SetVertices(NewMeshManager.MyVertices);
-
-        _meshFilter.sharedMesh = _myMesh;
+        // _myMesh.SetVertices(NewMeshManager.MyVertices);
 
         foreach(var v in NewMeshManager.MyVertices)
         {

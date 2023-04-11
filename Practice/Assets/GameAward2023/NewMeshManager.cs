@@ -1,4 +1,5 @@
 #if UNITY_EDITOR
+using System.IO;
 using UnityEditor;
 #endif
 using UnityEngine;
@@ -7,16 +8,26 @@ using UnityEngine.SceneManagement;
 public class NewMeshManager : MonoBehaviour
 {
     private GameObject _go;
-    private MeshFilter _meshFilter = default;
-    public MeshFilter MeshFilter => _meshFilter;
+    private static MeshFilter _meshFilter = default;
+    public static MeshFilter MeshFilter => _meshFilter;
 
-    private Mesh _myMesh;
+    private static Mesh _myMesh;
 
-    public Mesh MyMesh => _myMesh;
+    public static Mesh MyMesh => _myMesh;
 
-    private Vector3[] _myVertices = default;
+    private static MeshRenderer _meshRenderer;
 
-    private int[] _myTriangles = default;
+    public static MeshRenderer MeshRenderer;
+
+    public static Material _meshMaterial;
+
+    private static Vector3[] _myVertices = default;
+
+    public static Vector3[] MyVertices => _myVertices;
+
+    private static int[] _myTriangles = default;
+
+    public static int[] MyTriangles => _myTriangles;
 
     // private float[] _radiuses;
 
@@ -43,27 +54,38 @@ public class NewMeshManager : MonoBehaviour
 
     [SerializeField] private string _path;
 
-    private string _name = "TestMesh";
+    [SerializeField] private string _name = "TestMesh";
 
-    private static int _num = 0;
+    // private int _num = 0;
 
-    private static string _meshName;
-
-    public static string MeshName => _meshName;
+    // private string _meshName;
 
     public static bool _isFinished;
 
-    private SaveData _saveData;
+    public SaveData _saveData;
 
+    private DataManager _dataManager;
+
+    // public SaveData.WeaponData _data;
 
     [ContextMenu("Make mesh from model")]
-  
-    void Start()
+
+    private void Awake()
     {
-        SaveManager.Load();
+        _saveData = new SaveData();
+        _dataManager = new DataManager();
+        _meshRenderer = GetComponent<MeshRenderer>();
         _meshFilter = gameObject.GetComponent<MeshFilter>();
         _myMesh = new Mesh();
-        // _radiuses = new float[_nVertices];
+       
+        // _data = new SaveData.WeaponData();
+    }
+
+    void Start()
+    {
+        // _dataManager.Load();
+        // _radiuses = new float[_nVertices];   
+        _meshMaterial = _meshRenderer.material;
 
         _myVertices = new Vector3[_nVertices];
 
@@ -103,7 +125,7 @@ public class NewMeshManager : MonoBehaviour
         int nPolygons = _nVertices - 2;
         int nTriangles = nPolygons * 3;
 
-        int[] _myTriangles = new int[nTriangles];
+        _myTriangles = new int[nTriangles];
 
         for (int i = 0; i < nPolygons; i++)
         {
@@ -143,7 +165,6 @@ public class NewMeshManager : MonoBehaviour
 
         Vector3 mousePos = Input.mousePosition;
         var worldPos = Camera.main.ScreenToWorldPoint(mousePos);
-        Debug.Log(worldPos);
 
         for (int i = 0; i < _myVertices.Length; i++)
         {
@@ -167,19 +188,9 @@ public class NewMeshManager : MonoBehaviour
         float disX = worldPos.x - _myVertices[_indexNum].x;
         float disY = worldPos.y - _myVertices[_indexNum].y;
 
-        if (toDis <= ioDis)
-        {
-            Debug.Log("内側");
-        }
-        else if (toDis > ioDis)
-        {
-            Debug.Log("外側");
-        }
-
         if (Mathf.Abs(disX) < _radius && Mathf.Abs(disY) < _radius /*disX < _radiuses[_radiusIndexNum] && disY < _radiuses[_radiusIndexNum]
                     dis2 < _radius*/)
         {
-            Debug.Log($"disX = {disX}, disY = {disY}");
             _myVertices[_indexNum] -= new Vector3(disX, disY, 0);
             //_myVertices[_indexNum] = _closeMesh;
             // _radiuses[_radiusIndexNum] -= 0.1f;
@@ -191,7 +202,6 @@ public class NewMeshManager : MonoBehaviour
 
             //}
 
-            Debug.Log($"一番近い頂点{_indexNum}に{disX}と{disY}を足した{_myVertices[_indexNum]}");
             // Debug.Log($"一番近い頂点{_indexNum}が反応する距離は{_radiuses[_radiusIndexNum]}です");
 
             _myMesh.SetVertices(_myVertices);
@@ -200,7 +210,6 @@ public class NewMeshManager : MonoBehaviour
         }
         else
         {
-            Debug.Log($"disX = {disX}, disY = {disY}");
             Debug.Log($"叩いた場所が一番近い頂点{_indexNum}から離れすぎてます");
         }
         _dis = 1000f;
@@ -209,29 +218,38 @@ public class NewMeshManager : MonoBehaviour
     [System.Obsolete]
     public void OnSceneChange()
     {
-//        _isFinished = true;
-//        _go = this.gameObject;
-//#if UNITY_EDITOR
-//        if (_num == 0)
-//        {
-//            _meshName = _name + $"{_num}";
-//            _path = "Assets/Resources/MeshFolder/" + _meshName + ".asset";
-//            AssetDatabase.CreateAsset(_meshFilter.mesh, _path);
-//            _num++;
-//        }
-//        else if (_num >= 1)
-//        {
-//            _meshName = _name + $"{_num}";
-//            _path = "Assets/Resources/MeshFolder/" + _meshName + ".asset";
-//            AssetDatabase.CreateAsset(_meshFilter.mesh, _path);
-//            _num++;
-//        }
+    //    _saveData._prefabName = _name;
+    //    _saveData._mesh = _myMesh;
+    //    _saveData._meshFilter = _meshFilter;
+     
+        // _dataManager.Save();
 
-//        PrefabUtility.CreatePrefab("Assets/Resources/" + _meshName + ".prefab", _go);
+        // Debug.Log(_dataManager);
 
-//        AssetDatabase.SaveAssets();
-//#endif
+        // SaveManager.Save();
+
+        //        _isFinished = true;
+        //        _go = this.gameObject;
+        //#if UNITY_EDITOR
+        //        if (_num == 0)
+        //        {
+        //            _meshName = _name + $"{_num}";
+        //            _path = "Assets/Resources/MeshFolder/" + _meshName + ".asset";
+        //            AssetDatabase.CreateAsset(_meshFilter.mesh, _path);
+        //            _num++;
+        //        }
+        //        else if (_num >= 1)
+        //        {
+        //            _meshName = _name + $"{_num}";
+        //            _path = "Assets/Resources/MeshFolder/" + _meshName + ".asset";
+        //            AssetDatabase.CreateAsset(_meshFilter.mesh, _path);
+        //            _num++;
+        //        }
+
+        //        PrefabUtility.CreatePrefab("Assets/Resources/" + _meshName + ".prefab", _go);
+
+        //        AssetDatabase.SaveAssets();
+        //#endif
         SceneManager.LoadScene("BattleSample");
-        SaveManager.Save();
     }
 }
