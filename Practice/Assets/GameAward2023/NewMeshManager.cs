@@ -62,18 +62,47 @@ public class NewMeshManager : MonoBehaviour
 
     public static bool _isFinished;
 
-    public SaveData _saveData;
+    // public SaveData _saveData;
 
-    private DataManager _dataManager;
+    // private SaveManager _dataManager;
+
+    // private MitaraiSaveManager _saveManager;
 
     // public SaveData.WeaponData _data;
 
+    string _filePath;
+    SaveData _saveData;
+
+
     [ContextMenu("Make mesh from model")]
+    public void Save()
+    {
+        string json = JsonUtility.ToJson(_saveData, true);
+        StreamWriter streamWriter = new StreamWriter(_filePath);
+        streamWriter.Write(json);
+        streamWriter.Flush();
+        streamWriter.Close();
+
+    }
+
+    public void Load()
+    {
+        if (File.Exists(_filePath))
+        {
+            StreamReader streamReader;
+            streamReader = new StreamReader(_filePath);
+            string data = streamReader.ReadToEnd();
+            streamReader.Close();
+            _saveData = JsonUtility.FromJson<SaveData>(data);
+        }
+    }
 
     private void Awake()
     {
+        _filePath = Application.dataPath + "/WeaponData.json";
         _saveData = new SaveData();
-        _dataManager = new DataManager();
+
+        _saveData = new SaveData();
         _meshRenderer = GetComponent<MeshRenderer>();
         _meshFilter = gameObject.GetComponent<MeshFilter>();
         _myMesh = new Mesh();
@@ -83,7 +112,8 @@ public class NewMeshManager : MonoBehaviour
 
     void Start()
     {
-        // _dataManager.Load();
+        Load();
+        // SaveManager.Load();
         // _radiuses = new float[_nVertices];   
         _meshMaterial = _meshRenderer.material;
 
@@ -147,6 +177,9 @@ public class NewMeshManager : MonoBehaviour
         _myMesh.SetTriangles(_myTriangles, 0);
 
         _meshFilter.mesh = _myMesh;
+
+        Debug.Log(_myVertices);
+        Debug.Log(_myTriangles);
     }
     void Update()
     {
@@ -218,38 +251,22 @@ public class NewMeshManager : MonoBehaviour
     [System.Obsolete]
     public void OnSceneChange()
     {
-    //    _saveData._prefabName = _name;
-    //    _saveData._mesh = _myMesh;
-    //    _saveData._meshFilter = _meshFilter;
-     
-        // _dataManager.Save();
+        _saveData._prefabName = _name;
+        _saveData._myVertices = _myVertices;
+        _saveData._myTriangles = _myTriangles;
+
+        Debug.Log(_saveData._prefabName);
+        Debug.Log(_saveData._myVertices);
+        Debug.Log(_saveData._myTriangles);
+
+        Save();
+
+        Debug.Log(_saveData._prefabName);
+        Debug.Log(_saveData._myVertices);
+        Debug.Log(_saveData._myTriangles);
 
         // Debug.Log(_dataManager);
 
-        // SaveManager.Save();
-
-        //        _isFinished = true;
-        //        _go = this.gameObject;
-        //#if UNITY_EDITOR
-        //        if (_num == 0)
-        //        {
-        //            _meshName = _name + $"{_num}";
-        //            _path = "Assets/Resources/MeshFolder/" + _meshName + ".asset";
-        //            AssetDatabase.CreateAsset(_meshFilter.mesh, _path);
-        //            _num++;
-        //        }
-        //        else if (_num >= 1)
-        //        {
-        //            _meshName = _name + $"{_num}";
-        //            _path = "Assets/Resources/MeshFolder/" + _meshName + ".asset";
-        //            AssetDatabase.CreateAsset(_meshFilter.mesh, _path);
-        //            _num++;
-        //        }
-
-        //        PrefabUtility.CreatePrefab("Assets/Resources/" + _meshName + ".prefab", _go);
-
-        //        AssetDatabase.SaveAssets();
-        //#endif
-        SceneManager.LoadScene("BattleSample");
+        // SceneManager.LoadScene("BattleSample");
     }
 }
