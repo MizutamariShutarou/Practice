@@ -4,13 +4,18 @@ using UnityEngine;
 public class SaveManager
 {
     private string _filePath;
+
     private SaveData _saveData;
     public SaveData SaveData => _saveData;
 
+    private SaveData.WeaponData _weaponData;
+
+    public SaveData.WeaponData WeaponData => _weaponData;
     public SaveManager()
     {
         _filePath = Application.dataPath + "/WeaponData.json";
         _saveData = new SaveData();
+        _weaponData = new SaveData.WeaponData();
     }
 
     public void Save()
