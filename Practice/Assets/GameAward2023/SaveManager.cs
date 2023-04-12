@@ -1,41 +1,37 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using UnityEngine;
 
 public class SaveManager
 {
-    static SaveManager Instance = new SaveManager();
+    private string _filePath;
+    private SaveData _saveData;
+    public SaveData SaveData => _saveData;
 
-#if RELEASE
-    const string FILEPATH = "save.dat";
-#else
-    const string FILEPATH = "save.txt";
-#endif
-    SaveData Data = null;
-
-    static public void Load()
+    public SaveManager()
     {
-        Instance.Data = LocalData.Load<SaveData>(FILEPATH);
-        if (Instance.Data == null)
+        _filePath = Application.dataPath + "/WeaponData.json";
+        _saveData = new SaveData();
+    }
+
+    public void Save()
+    {
+        string json = JsonUtility.ToJson(_saveData, true);
+        StreamWriter streamWriter = new StreamWriter(_filePath);
+        streamWriter.Write(json); 
+        streamWriter.Close();
+
+    }
+
+    public void Load()
+    {
+        if (File.Exists(_filePath))
         {
-            Instance.Data = new SaveData();
+            StreamReader streamReader;
+            streamReader = new StreamReader(_filePath);
+            string data = streamReader.ReadToEnd();
+            streamReader.Close();
+            _saveData = JsonUtility.FromJson<SaveData>(data);
         }
     }
 
-    static public SaveData GetData()
-    {
-        if (Instance.Data == null)
-        {
-            Load();
-        }
-        return Instance.Data;
-    }
-
-    static public void Save()
-    {
-        LocalData.Save<SaveData>(FILEPATH, Instance.Data);
-    }
 }
