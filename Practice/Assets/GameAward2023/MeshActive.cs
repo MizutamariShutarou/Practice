@@ -23,8 +23,8 @@ public class MeshActive : MonoBehaviour
 
         _myMesh = new Mesh();
 
-        _myMesh.vertices = _saveManager.SaveData.WeaponList[2]._myVertices;
-        _myMesh.triangles = _saveManager.SaveData.WeaponList[2]._myTriangles;
+        _myMesh.vertices = _saveManager.SaveData.WeaponList[0]._myVertices;
+        _myMesh.triangles = _saveManager.SaveData.WeaponList[0]._myTriangles;
 
         /*_myMesh.vertices = _saveManager.WeaponData._myVertices;
         _myMesh.triangles = _saveManager.WeaponData._myTriangles;*/

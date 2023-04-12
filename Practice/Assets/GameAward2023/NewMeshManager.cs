@@ -264,4 +264,9 @@ public class NewMeshManager : MonoBehaviour
 
         SceneManager.LoadScene("BattleSample");
     }
+
+    public void OnDelateData()
+    {
+        _saveManager.DelateSaveData();
+    }
 }

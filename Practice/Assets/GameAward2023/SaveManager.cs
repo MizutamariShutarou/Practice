@@ -39,4 +39,9 @@ public class SaveManager
         }
     }
 
+    public void DelateSaveData()
+    {
+        _saveData = new SaveData();
+        _weaponData = new SaveData.WeaponData();
+    }
 }
