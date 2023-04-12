@@ -6,8 +6,8 @@ using UnityEngine;
 public class SaveData
 {
     public string _prefabName = default;
-    public Mesh _mesh = default;
-    public MeshFilter _meshFilter = default;
+    public Vector3[] _myVertices = default;
+    public int[] _myTriangles = default;
     /*[System.Serializable]
     public class WeaponData
     {

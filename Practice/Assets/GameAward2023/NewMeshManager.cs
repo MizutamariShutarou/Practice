@@ -64,18 +64,18 @@ public class NewMeshManager : MonoBehaviour
 
     // public SaveData _saveData;
 
-    // private SaveManager _dataManager;
+    private SaveManager _saveManager;
 
     // private MitaraiSaveManager _saveManager;
 
     // public SaveData.WeaponData _data;
 
-    string _filePath;
-    SaveData _saveData;
+    /*private string _filePath;
+    private SaveData _saveData;*/
 
 
     [ContextMenu("Make mesh from model")]
-    public void Save()
+    /*public void Save()
     {
         string json = JsonUtility.ToJson(_saveData, true);
         StreamWriter streamWriter = new StreamWriter(_filePath);
@@ -95,14 +95,15 @@ public class NewMeshManager : MonoBehaviour
             streamReader.Close();
             _saveData = JsonUtility.FromJson<SaveData>(data);
         }
-    }
+    }*/
 
     private void Awake()
     {
-        _filePath = Application.dataPath + "/WeaponData.json";
-        _saveData = new SaveData();
+        /*_filePath = Application.dataPath + "/WeaponData.json";
+        _saveData = new SaveData();*/
 
-        _saveData = new SaveData();
+        _saveManager = new SaveManager();
+
         _meshRenderer = GetComponent<MeshRenderer>();
         _meshFilter = gameObject.GetComponent<MeshFilter>();
         _myMesh = new Mesh();
@@ -112,7 +113,7 @@ public class NewMeshManager : MonoBehaviour
 
     void Start()
     {
-        Load();
+        _saveManager.Load();
         // SaveManager.Load();
         // _radiuses = new float[_nVertices];   
         _meshMaterial = _meshRenderer.material;
@@ -251,22 +252,15 @@ public class NewMeshManager : MonoBehaviour
     [System.Obsolete]
     public void OnSceneChange()
     {
-        _saveData._prefabName = _name;
+        /*_saveData._prefabName = _name;
         _saveData._myVertices = _myVertices;
-        _saveData._myTriangles = _myTriangles;
+        _saveData._myTriangles = _myTriangles;*/
 
-        Debug.Log(_saveData._prefabName);
-        Debug.Log(_saveData._myVertices);
-        Debug.Log(_saveData._myTriangles);
+        _saveManager.SaveData._prefabName = _name;
+        _saveManager.SaveData._myVertices = _myVertices;
+        _saveManager.SaveData._myTriangles = _myTriangles;
+        _saveManager.Save();
 
-        Save();
-
-        Debug.Log(_saveData._prefabName);
-        Debug.Log(_saveData._myVertices);
-        Debug.Log(_saveData._myTriangles);
-
-        // Debug.Log(_dataManager);
-
-        // SceneManager.LoadScene("BattleSample");
+        SceneManager.LoadScene("BattleSample");
     }
 }

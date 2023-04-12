@@ -11,29 +11,24 @@ public class MeshActive : MonoBehaviour
     private MeshFilter _meshFilter;
     private Mesh _myMesh;
     private MeshRenderer _myRenderer;
-    DataManager _dataManager;
+    SaveManager _saveManager;
 
 
     private void Start()
     {
         _panel.SetActive(false);
+        _saveManager = new SaveManager();
 
-        //_meshFilter = GetComponent<MeshFilter>();
-        //_myMesh = new Mesh();
-        //_meshFilter.sharedMesh = _myMesh;
-        //_meshFilter.mesh = _myMesh;
+        _saveManager.Load();
 
         _myMesh = new Mesh();
-        _myMesh.vertices = NewMeshManager.MyVertices;
-        _myMesh.triangles = NewMeshManager.MyTriangles;
-        // _myMesh = NewMeshManager.MyMesh;
+        _myMesh.vertices = _saveManager.SaveData._myVertices;
+        _myMesh.triangles = _saveManager.SaveData._myTriangles;
         GameObject go = new GameObject("MeshObj");
         _meshFilter = go.AddComponent<MeshFilter>();
         _meshFilter.mesh = _myMesh;
         _myRenderer = go.AddComponent<MeshRenderer>();
         // _myRenderer.material = NewMeshManager._meshMaterial;
-
-        // _myMesh.SetVertices(NewMeshManager.MyVertices);
 
         foreach(var v in NewMeshManager.MyVertices)
         {
@@ -48,7 +43,7 @@ public class MeshActive : MonoBehaviour
     {
         try
         {
-            _dataManager.Load();
+            // SaveManager.Load();
         }
 
         catch (NullReferenceException e)
@@ -59,13 +54,6 @@ public class MeshActive : MonoBehaviour
 
         finally
         {
-            Debug.Log(_dataManager);
-            //_myMesh = _saveData._mesh;
-            //_meshFilter = _saveData._meshFilter;
-            //Debug.Log(_saveData._prefabName);
-            //Debug.Log(_saveData._mesh);
-            //Debug.Log(_saveData._meshFilter);
-
             await UniTask.CompletedTask;
         }
     }
