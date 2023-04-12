@@ -22,18 +22,17 @@ public class MeshActive : MonoBehaviour
         _saveManager.Load();
 
         _myMesh = new Mesh();
-        _myMesh.vertices = _saveManager.SaveData._myVertices;
-        _myMesh.triangles = _saveManager.SaveData._myTriangles;
+
+        _myMesh.vertices = _saveManager.SaveData.WeaponList[2]._myVertices;
+        _myMesh.triangles = _saveManager.SaveData.WeaponList[2]._myTriangles;
+
+        /*_myMesh.vertices = _saveManager.WeaponData._myVertices;
+        _myMesh.triangles = _saveManager.WeaponData._myTriangles;*/
         GameObject go = new GameObject("MeshObj");
         _meshFilter = go.AddComponent<MeshFilter>();
         _meshFilter.mesh = _myMesh;
         _myRenderer = go.AddComponent<MeshRenderer>();
         // _myRenderer.material = NewMeshManager._meshMaterial;
-
-        foreach(var v in NewMeshManager.MyVertices)
-        {
-            Debug.Log(v);
-        }
 
         // var ct = this.GetCancellationTokenOnDestroy();
 

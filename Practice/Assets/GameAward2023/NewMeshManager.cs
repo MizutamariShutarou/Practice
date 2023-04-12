@@ -256,9 +256,10 @@ public class NewMeshManager : MonoBehaviour
         _saveData._myVertices = _myVertices;
         _saveData._myTriangles = _myTriangles;*/
 
-        _saveManager.SaveData._prefabName = _name;
-        _saveManager.SaveData._myVertices = _myVertices;
-        _saveManager.SaveData._myTriangles = _myTriangles;
+        _saveManager.WeaponData._prefabName = _name;
+        _saveManager.WeaponData._myVertices = _myVertices;
+        _saveManager.WeaponData._myTriangles = _myTriangles;
+        _saveManager.SaveData.WeaponList.Add(_saveManager.WeaponData);
         _saveManager.Save();
 
         SceneManager.LoadScene("BattleSample");
