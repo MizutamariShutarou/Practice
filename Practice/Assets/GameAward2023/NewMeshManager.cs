@@ -8,26 +8,26 @@ using UnityEngine.SceneManagement;
 public class NewMeshManager : MonoBehaviour
 {
     private GameObject _go;
-    private static MeshFilter _meshFilter = default;
-    public static MeshFilter MeshFilter => _meshFilter;
+    private MeshFilter _meshFilter = default;
+    public MeshFilter MeshFilter => _meshFilter;
 
-    private static Mesh _myMesh;
+    public Mesh _myMesh;
 
-    public static Mesh MyMesh => _myMesh;
+    private Mesh MyMesh => _myMesh;
 
-    private static MeshRenderer _meshRenderer;
+    private MeshRenderer _meshRenderer;
 
-    public static MeshRenderer MeshRenderer;
+    public MeshRenderer MeshRenderer;
 
-    public static Material _meshMaterial;
+    public Material _meshMaterial;
 
-    private static Vector3[] _myVertices = default;
+    private Vector3[] _myVertices = default;
 
-    public static Vector3[] MyVertices => _myVertices;
+    // public Vector3[] MyVertices => _myVertices;
 
-    private static int[] _myTriangles = default;
+    private int[] _myTriangles = default;
 
-    public static int[] MyTriangles => _myTriangles;
+    // public static int[] MyTriangles => _myTriangles;
 
     // private float[] _radiuses;
 
@@ -54,17 +54,15 @@ public class NewMeshManager : MonoBehaviour
 
     [SerializeField] private string _path;
 
-    [SerializeField] private string _name = "TestMesh";
-
     // private int _num = 0;
 
     // private string _meshName;
 
     public static bool _isFinished;
 
-    // public SaveData _saveData;
-
     private SaveManager _saveManager;
+
+    private SaveData _saveData;
 
     // private MitaraiSaveManager _saveManager;
 
@@ -75,46 +73,26 @@ public class NewMeshManager : MonoBehaviour
 
 
     [ContextMenu("Make mesh from model")]
-    /*public void Save()
-    {
-        string json = JsonUtility.ToJson(_saveData, true);
-        StreamWriter streamWriter = new StreamWriter(_filePath);
-        streamWriter.Write(json);
-        streamWriter.Flush();
-        streamWriter.Close();
-
-    }
-
-    public void Load()
-    {
-        if (File.Exists(_filePath))
-        {
-            StreamReader streamReader;
-            streamReader = new StreamReader(_filePath);
-            string data = streamReader.ReadToEnd();
-            streamReader.Close();
-            _saveData = JsonUtility.FromJson<SaveData>(data);
-        }
-    }*/
 
     private void Awake()
     {
-        /*_filePath = Application.dataPath + "/WeaponData.json";
-        _saveData = new SaveData();*/
-
+        _saveData = new SaveData();
         _saveManager = new SaveManager();
-
+        _saveManager.Initialize();
         _meshRenderer = GetComponent<MeshRenderer>();
         _meshFilter = gameObject.GetComponent<MeshFilter>();
         _myMesh = new Mesh();
-       
+
         // _data = new SaveData.WeaponData();
     }
 
     void Start()
     {
-        _saveManager.Load();
-        // SaveManager.Load();
+        foreach (var f in SaveManager._weaponFileList)
+        {
+            _saveManager.Load(f);
+        }
+
         // _radiuses = new float[_nVertices];   
         _meshMaterial = _meshRenderer.material;
 
@@ -192,7 +170,7 @@ public class NewMeshManager : MonoBehaviour
 
     void Calculation()
     {
-        if(_isFinished)
+        if (_isFinished)
         {
             return;
         }
@@ -248,25 +226,65 @@ public class NewMeshManager : MonoBehaviour
         }
         _dis = 1000f;
     }
-
-    [System.Obsolete]
-    public void OnSceneChange()
+    public void OnSaveData(string weapon)
     {
-        /*_saveData._prefabName = _name;
-        _saveData._myVertices = _myVertices;
-        _saveData._myTriangles = _myTriangles;*/
+        if (weapon == "Taiken")
+        {
+            _saveManager.SaveData._prefabName = weapon;
+            _saveManager.SaveData._myVertices = _myVertices;
+            _saveManager.SaveData._myTriangles = _myTriangles;
+            _saveManager.Save(_saveManager.SaveData, SaveManager.Taiken);
+        }
+        else if (weapon == "Souken")
+        {
+            _saveManager.SaveData._prefabName = weapon;
+            _saveManager.SaveData._myVertices = _myVertices;
+            _saveManager.SaveData._myTriangles = _myTriangles;
+            _saveManager.Save(_saveManager.SaveData, SaveManager.Souken);
+        }
+        else if (weapon == "Hammer")
+        {
+            _saveManager.SaveData._prefabName = weapon;
+            _saveManager.SaveData._myVertices = _myVertices;
+            _saveManager.SaveData._myTriangles = _myTriangles;
+            _saveManager.Save(_saveManager.SaveData, SaveManager.Hammer);
+        }
+        else if (weapon == "Yari")
+        {
+            _saveManager.SaveData._prefabName = weapon;
+            _saveManager.SaveData._myVertices = _myVertices;
+            _saveManager.SaveData._myTriangles = _myTriangles;
+            _saveManager.Save(_saveManager.SaveData, SaveManager.Yari);
+        }
 
-        _saveManager.WeaponData._prefabName = _name;
-        _saveManager.WeaponData._myVertices = _myVertices;
-        _saveManager.WeaponData._myTriangles = _myTriangles;
-        _saveManager.SaveData.WeaponList.Add(_saveManager.WeaponData);
-        _saveManager.Save();
+        // _saveManager.SaveData.WeaponList.Add(_saveManager.WeaponData);
 
+        // Debug.Log(_saveManager.SaveData.WeaponList[_meshId]);
+
+        //_saveManager.SaveData.WeaponList[_meshId]._id = _meshId;
+
+        //_saveManager.SaveData.WeaponList[_meshId]._myVertices = _myVertices;
+
+        //_saveManager.SaveData.WeaponList[_meshId]._myTriangles = _myTriangles;
+
+        //_saveManager.Save();
+    }
+
+    public void ChangeScene()
+    {
         SceneManager.LoadScene("BattleSample");
     }
 
-    public void OnDelateData()
+    public void OnResetSaveData()
     {
-        _saveManager.DelateSaveData();
+        foreach (var f in SaveManager._weaponFileList)
+        {
+            _saveManager.ResetSaveData(f);
+        }
+    }
+
+    public void OnAddSaveData()
+    {
+        
     }
 }
