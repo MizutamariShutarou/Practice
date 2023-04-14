@@ -35,6 +35,11 @@ class LocalData
         File.WriteAllBytes(Application.dataPath + "/" + file, arr);
     }
 
+    static public void ResetSaveData(string file)
+    {
+        File.Delete(Application.dataPath + "/" + file);
+    }
+
     /// <summary>
     /// AESà√çÜâª
     /// </summary>
