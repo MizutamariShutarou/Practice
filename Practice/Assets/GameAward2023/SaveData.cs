@@ -5,9 +5,9 @@ using UnityEngine;
 [System.Serializable]
 public class SaveData
 {
-    public string _prefabName = default;
-    public Vector3[] _myVertices = default;
-    public int[] _myTriangles = default;
+    public string _prefabName;
+    public Vector3[] _myVertices;
+    public int[] _myTriangles;
 
     //[System.Serializable]
     //public class WeaponData

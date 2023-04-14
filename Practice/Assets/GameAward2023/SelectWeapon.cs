@@ -9,7 +9,7 @@ public class SelectWeapon : MonoBehaviour
     private GameObject _go = default;
 
     [SerializeField] Material _material;
-
+    
     SaveManager _saveManager;
 
     private void Start()
@@ -68,13 +68,17 @@ public class SelectWeapon : MonoBehaviour
 
     public void CreateTaiken()
     {
-        _saveManager.Load(SaveManager.Taiken);
+        SaveData data = NewSaveManager.Load(NewSaveManager.TAIKENFILEPATH);
+        Debug.Log(data._prefabName);
+
         Mesh mesh = new Mesh();
+        mesh.vertices = data._myVertices;
+        mesh.triangles = data._myTriangles;
 
-        mesh.vertices = _saveManager.SaveData._myVertices;
-        mesh.triangles = _saveManager.SaveData._myTriangles;
+        //mesh.vertices = _saveManager.SaveData._myVertices;
+        //mesh.triangles = _saveManager.SaveData._myTriangles;
 
-        _go = new GameObject("Taiken");
+        _go = new GameObject(data._prefabName);
 
         MeshFilter meshFilter = _go.AddComponent<MeshFilter>();
         meshFilter.mesh = mesh;
@@ -84,13 +88,32 @@ public class SelectWeapon : MonoBehaviour
     }
     public void CreateSouken()
     {
-        _saveManager.Load(SaveManager.Souken);
+        //_saveManager.Load(SaveManager.Souken);
+        //Mesh mesh = new Mesh();
+
+        //mesh.vertices = _saveManager.SaveData._myVertices;
+        //mesh.triangles = _saveManager.SaveData._myTriangles;
+
+        //_go = new GameObject("Souken");
+
+        //MeshFilter meshFilter = _go.AddComponent<MeshFilter>();
+        //meshFilter.mesh = mesh;
+
+        //_myRenderer = _go.AddComponent<MeshRenderer>();
+        //_myRenderer.material = _material;
+
+        SaveData data = NewSaveManager.Load(NewSaveManager.SOUKENFILEPATH);
+        Debug.Log(data._prefabName);
+        Debug.Log(data._myVertices);
+
         Mesh mesh = new Mesh();
+        mesh.vertices = data._myVertices;
+        mesh.triangles = data._myTriangles;
 
-        mesh.vertices = _saveManager.SaveData._myVertices;
-        mesh.triangles = _saveManager.SaveData._myTriangles;
+        //mesh.vertices = _saveManager.SaveData._myVertices;
+        //mesh.triangles = _saveManager.SaveData._myTriangles;
 
-        _go = new GameObject("Souken");
+        _go = new GameObject(data._prefabName);
 
         MeshFilter meshFilter = _go.AddComponent<MeshFilter>();
         meshFilter.mesh = mesh;
@@ -100,13 +123,32 @@ public class SelectWeapon : MonoBehaviour
     }
     public void CreateHammer()
     {
-        _saveManager.Load(SaveManager.Hammer);
+        //_saveManager.Load(SaveManager.Hammer);
+        //Mesh mesh = new Mesh();
+
+        //mesh.vertices = _saveManager.SaveData._myVertices;
+        //mesh.triangles = _saveManager.SaveData._myTriangles;
+
+        //_go = new GameObject("Hammer");
+
+        //MeshFilter meshFilter = _go.AddComponent<MeshFilter>();
+        //meshFilter.mesh = mesh;
+
+        //_myRenderer = _go.AddComponent<MeshRenderer>();
+        //_myRenderer.material = _material;
+
+        SaveData data = NewSaveManager.Load(NewSaveManager.HAMMERFILEPATH);
+        Debug.Log(data._prefabName);
+        Debug.Log(data._myVertices);
+
         Mesh mesh = new Mesh();
+        mesh.vertices = data._myVertices;
+        mesh.triangles = data._myTriangles;
 
-        mesh.vertices = _saveManager.SaveData._myVertices;
-        mesh.triangles = _saveManager.SaveData._myTriangles;
+        //mesh.vertices = _saveManager.SaveData._myVertices;
+        //mesh.triangles = _saveManager.SaveData._myTriangles;
 
-        _go = new GameObject("Hammer");
+        _go = new GameObject(data._prefabName);
 
         MeshFilter meshFilter = _go.AddComponent<MeshFilter>();
         meshFilter.mesh = mesh;
@@ -116,13 +158,32 @@ public class SelectWeapon : MonoBehaviour
     }
     public void CreateYari()
     {
-        _saveManager.Load(SaveManager.Yari);
+        //_saveManager.Load(SaveManager.Yari);
+        //Mesh mesh = new Mesh();
+
+        //mesh.vertices = _saveManager.SaveData._myVertices;
+        //mesh.triangles = _saveManager.SaveData._myTriangles;
+
+        //_go = new GameObject("Yari");
+
+        //MeshFilter meshFilter = _go.AddComponent<MeshFilter>();
+        //meshFilter.mesh = mesh;
+
+        //_myRenderer = _go.AddComponent<MeshRenderer>();
+        //_myRenderer.material = _material;
+
+        SaveData data = NewSaveManager.Load(NewSaveManager.YARIFILEPATH);
+        Debug.Log(data._prefabName);
+        Debug.Log(data._myVertices);
+
         Mesh mesh = new Mesh();
+        mesh.vertices = data._myVertices;
+        mesh.triangles = data._myTriangles;
 
-        mesh.vertices = _saveManager.SaveData._myVertices;
-        mesh.triangles = _saveManager.SaveData._myTriangles;
+        //mesh.vertices = _saveManager.SaveData._myVertices;
+        //mesh.triangles = _saveManager.SaveData._myTriangles;
 
-        _go = new GameObject("Yari");
+        _go = new GameObject(data._prefabName);
 
         MeshFilter meshFilter = _go.AddComponent<MeshFilter>();
         meshFilter.mesh = mesh;

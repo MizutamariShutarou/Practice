@@ -64,9 +64,7 @@ public class NewMeshManager : MonoBehaviour
 
     private SaveData _saveData;
 
-    // private MitaraiSaveManager _saveManager;
-
-    // public SaveData.WeaponData _data;
+    public SaveData SaveData => _saveData;
 
     /*private string _filePath;
     private SaveData _saveData;*/
@@ -77,8 +75,9 @@ public class NewMeshManager : MonoBehaviour
     private void Awake()
     {
         _saveData = new SaveData();
-        _saveManager = new SaveManager();
-        _saveManager.Initialize();
+        //_saveManager = new SaveManager();
+        //_saveManager.Initialize();
+        NewSaveManager.Initialize();
         _meshRenderer = GetComponent<MeshRenderer>();
         _meshFilter = gameObject.GetComponent<MeshFilter>();
         _myMesh = new Mesh();
@@ -90,7 +89,7 @@ public class NewMeshManager : MonoBehaviour
     {
         foreach (var f in SaveManager._weaponFileList)
         {
-            _saveManager.Load(f);
+            NewSaveManager.Load(f);
         }
 
         // _radiuses = new float[_nVertices];   
@@ -230,44 +229,32 @@ public class NewMeshManager : MonoBehaviour
     {
         if (weapon == "Taiken")
         {
-            _saveManager.SaveData._prefabName = weapon;
-            _saveManager.SaveData._myVertices = _myVertices;
-            _saveManager.SaveData._myTriangles = _myTriangles;
-            _saveManager.Save(_saveManager.SaveData, SaveManager.Taiken);
+            _saveData._prefabName = weapon;
+            _saveData._myVertices = _myVertices;
+            _saveData._myTriangles = _myTriangles;
+            NewSaveManager.Save(NewSaveManager.TAIKENFILEPATH, _saveData);
         }
         else if (weapon == "Souken")
         {
-            _saveManager.SaveData._prefabName = weapon;
-            _saveManager.SaveData._myVertices = _myVertices;
-            _saveManager.SaveData._myTriangles = _myTriangles;
-            _saveManager.Save(_saveManager.SaveData, SaveManager.Souken);
+            _saveData._prefabName = weapon;
+            _saveData._myVertices = _myVertices;
+            _saveData._myTriangles = _myTriangles;
+            NewSaveManager.Save(NewSaveManager.SOUKENFILEPATH, _saveData);
         }
         else if (weapon == "Hammer")
         {
-            _saveManager.SaveData._prefabName = weapon;
-            _saveManager.SaveData._myVertices = _myVertices;
-            _saveManager.SaveData._myTriangles = _myTriangles;
-            _saveManager.Save(_saveManager.SaveData, SaveManager.Hammer);
+            _saveData._prefabName = weapon;
+            _saveData._myVertices = _myVertices;
+            _saveData._myTriangles = _myTriangles;
+            NewSaveManager.Save(NewSaveManager.HAMMERFILEPATH, _saveData);
         }
         else if (weapon == "Yari")
         {
-            _saveManager.SaveData._prefabName = weapon;
-            _saveManager.SaveData._myVertices = _myVertices;
-            _saveManager.SaveData._myTriangles = _myTriangles;
-            _saveManager.Save(_saveManager.SaveData, SaveManager.Yari);
+            _saveData._prefabName = weapon;
+            _saveData._myVertices = _myVertices;
+            _saveData._myTriangles = _myTriangles;
+            NewSaveManager.Save(NewSaveManager.YARIFILEPATH, _saveData);
         }
-
-        // _saveManager.SaveData.WeaponList.Add(_saveManager.WeaponData);
-
-        // Debug.Log(_saveManager.SaveData.WeaponList[_meshId]);
-
-        //_saveManager.SaveData.WeaponList[_meshId]._id = _meshId;
-
-        //_saveManager.SaveData.WeaponList[_meshId]._myVertices = _myVertices;
-
-        //_saveManager.SaveData.WeaponList[_meshId]._myTriangles = _myTriangles;
-
-        //_saveManager.Save();
     }
 
     public void ChangeScene()
@@ -277,9 +264,9 @@ public class NewMeshManager : MonoBehaviour
 
     public void OnResetSaveData()
     {
-        foreach (var f in SaveManager._weaponFileList)
+        foreach (var f in NewSaveManager._weaponFileList)
         {
-            _saveManager.ResetSaveData(f);
+            NewSaveManager.ResetSaveData(f);
         }
     }
 
