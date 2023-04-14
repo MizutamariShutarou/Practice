@@ -744,8 +744,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 633835085}
         m_TargetAssemblyTypeName: SelectWeapon, Assembly-CSharp
-        m_MethodName: Select
-        m_Mode: 5
+        m_MethodName: CreateHammer
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -804,6 +804,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0c617d394a60964fb99742f28a13e36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _material: {fileID: 2100000, guid: 73a93d0a1347ae34f893766900918cab, type: 2}
 --- !u!1 &657916928
 GameObject:
   m_ObjectHideFlags: 0
@@ -964,6 +965,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0c617d394a60964fb99742f28a13e36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _material: {fileID: 0}
 --- !u!1 &675851698
 GameObject:
   m_ObjectHideFlags: 0
@@ -1828,10 +1830,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 633835085}
+      - m_Target: {fileID: 1863278121}
         m_TargetAssemblyTypeName: SelectWeapon, Assembly-CSharp
-        m_MethodName: Select
-        m_Mode: 5
+        m_MethodName: CreateSouken
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1890,6 +1892,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0c617d394a60964fb99742f28a13e36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _material: {fileID: 2100000, guid: 73a93d0a1347ae34f893766900918cab, type: 2}
 --- !u!1 &1889353576
 GameObject:
   m_ObjectHideFlags: 0
@@ -1975,10 +1978,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 633835085}
+      - m_Target: {fileID: 1889353582}
         m_TargetAssemblyTypeName: SelectWeapon, Assembly-CSharp
-        m_MethodName: Select
-        m_Mode: 5
+        m_MethodName: CreateYari
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -2037,6 +2040,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0c617d394a60964fb99742f28a13e36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _material: {fileID: 2100000, guid: 73a93d0a1347ae34f893766900918cab, type: 2}
 --- !u!1 &1913405440
 GameObject:
   m_ObjectHideFlags: 0
@@ -2122,10 +2126,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 633835085}
+      - m_Target: {fileID: 1913405446}
         m_TargetAssemblyTypeName: SelectWeapon, Assembly-CSharp
-        m_MethodName: Select
-        m_Mode: 5
+        m_MethodName: CreateTaiken
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -2184,6 +2188,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0c617d394a60964fb99742f28a13e36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _material: {fileID: 2100000, guid: 73a93d0a1347ae34f893766900918cab, type: 2}
 --- !u!1 &1987070458
 GameObject:
   m_ObjectHideFlags: 0

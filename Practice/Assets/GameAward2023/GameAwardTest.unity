@@ -1633,10 +1633,6 @@ MonoBehaviour:
   _y0: -2
   _radius: 2
   _path: 
-  _saveData:
-    _prefabName: 
-    _myVertices: []
-    _myTriangles: 
 --- !u!1 &1597761835
 GameObject:
   m_ObjectHideFlags: 0
