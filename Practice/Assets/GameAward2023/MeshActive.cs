@@ -1,110 +1,115 @@
-using System;
-using UnityEngine;
-using Cysharp.Threading.Tasks;
-using System.Threading;
-using System.IO;
+//using System;
+//using UnityEngine;
+//using Cysharp.Threading.Tasks;
+//using System.Threading;
+//using System.IO;
 
-public class MeshActive : MonoBehaviour
-{
-    [SerializeField]
-    private GameObject _panel;
-    private MeshFilter _meshFilter;
-    private Mesh _myMesh;
-    private MeshRenderer _myRenderer;
-    SaveManager _saveManager;
+//public class MeshActive : MonoBehaviour
+//{
+//    [SerializeField]
+//    private GameObject _panel;
+//    private MeshFilter _meshFilter;
+//    private Mesh _myMesh;
+//    private MeshRenderer _myRenderer;
+//    // SaveManager _saveManager;
 
 
-    private void Start()
-    {
-        _panel.SetActive(false);
-        _saveManager = new SaveManager();
+//    private void Awake()
+//    {
+//        _panel.SetActive(false);
+//        // _saveManager = new SaveManager();
 
-        _saveManager.Load();
+//        //_saveManager.Load();
 
-        _myMesh = new Mesh();
+//        foreach (var f in SaveManager._weaponFileList)
+//        {
+//            SaveManager.Load(, f);
+//        }
 
-        _myMesh.vertices = _saveManager.SaveData.WeaponList[0]._myVertices;
-        _myMesh.triangles = _saveManager.SaveData.WeaponList[0]._myTriangles;
+//        _myMesh = new Mesh();
 
-        /*_myMesh.vertices = _saveManager.WeaponData._myVertices;
-        _myMesh.triangles = _saveManager.WeaponData._myTriangles;*/
-        GameObject go = new GameObject("MeshObj");
-        _meshFilter = go.AddComponent<MeshFilter>();
-        _meshFilter.mesh = _myMesh;
-        _myRenderer = go.AddComponent<MeshRenderer>();
-        // _myRenderer.material = NewMeshManager._meshMaterial;
+//        //_myMesh.vertices = _saveManager.SaveData.WeaponList[_saveManager.WeaponData._id]._myVertices;
+//        //_myMesh.triangles = _saveManager.SaveData.WeaponList[_saveManager.WeaponData._id]._myTriangles;
 
-        // var ct = this.GetCancellationTokenOnDestroy();
+//        ///*_myMesh.vertices = _saveManager.WeaponData._myVertices;
+//        //_myMesh.triangles = _saveManager.WeaponData._myTriangles;*/
+//        //GameObject go = new GameObject("MeshObj");
+//        //_meshFilter = go.AddComponent<MeshFilter>();
+//        //_meshFilter.mesh = _myMesh;
+//        //_myRenderer = go.AddComponent<MeshRenderer>();
+//        // _myRenderer.material = NewMeshManager._meshMaterial;
 
-        // AcyncStart(ct).Forget();
-    }
-    private async UniTask AcyncStart(CancellationToken ct)
-    {
-        try
-        {
-            // SaveManager.Load();
-        }
+//        // var ct = this.GetCancellationTokenOnDestroy();
 
-        catch (NullReferenceException e)
-        {
-            Debug.LogError(e.Message);
-            _panel.SetActive(true);
-        }
+//        // AcyncStart(ct).Forget();
+//    }
+//    private async UniTask AcyncStart(CancellationToken ct)
+//    {
+//        try
+//        {
+//            // SaveManager.Load();
+//        }
 
-        finally
-        {
-            await UniTask.CompletedTask;
-        }
-    }
-}
-/*[Serializable]
-public class SaveMeshFilter
-{
-    private Mesh sharedMesh = null;
-    private Mesh mesh = null;
+//        catch (NullReferenceException e)
+//        {
+//            Debug.LogError(e.Message);
+//            _panel.SetActive(true);
+//        }
 
-    public static void Save(MeshFilter saveObj, string fileName)
-    {
-        var s = saveObj.sharedMesh;
-        var m = saveObj.mesh;
+//        finally
+//        {
+//            await UniTask.CompletedTask;
+//        }
+//    }
+//}
+///*[Serializable]
+//public class SaveMeshFilter
+//{
+//    private Mesh sharedMesh = null;
+//    private Mesh mesh = null;
 
-        string jsonS = JsonUtility.ToJson(s);
-        string jsonM = JsonUtility.ToJson(m);
+//    public static void Save(MeshFilter saveObj, string fileName)
+//    {
+//        var s = saveObj.sharedMesh;
+//        var m = saveObj.mesh;
 
-        StreamWriter streamWriterS = new StreamWriter(fileName + "\\" + "s" + ".json");
-        StreamWriter streamWriterM = new StreamWriter(fileName + "\\" + "m" + ".json");
+//        string jsonS = JsonUtility.ToJson(s);
+//        string jsonM = JsonUtility.ToJson(m);
 
-        streamWriterS.Write(jsonS);
-        streamWriterM.Write(jsonM);
+//        StreamWriter streamWriterS = new StreamWriter(fileName + "\\" + "s" + ".json");
+//        StreamWriter streamWriterM = new StreamWriter(fileName + "\\" + "m" + ".json");
 
-        streamWriterS.Flush();
-        streamWriterM.Flush();
+//        streamWriterS.Write(jsonS);
+//        streamWriterM.Write(jsonM);
 
-        streamWriterS.Close();
-        streamWriterM.Close();
-    }
-    public static MeshFilter Load(string fileName)
-    {
-        if (File.Exists(fileName))
-        {
-            var streamReaderS = new StreamReader(fileName + "\\" + "s" + ".json");
-            var streamReaderM = new StreamReader(fileName + "\\" + "m" + ".json");
+//        streamWriterS.Flush();
+//        streamWriterM.Flush();
 
-            string dataS = streamReaderS.ReadToEnd();
-            string dataM = streamReaderM.ReadToEnd();
+//        streamWriterS.Close();
+//        streamWriterM.Close();
+//    }
+//    public static MeshFilter Load(string fileName)
+//    {
+//        if (File.Exists(fileName))
+//        {
+//            var streamReaderS = new StreamReader(fileName + "\\" + "s" + ".json");
+//            var streamReaderM = new StreamReader(fileName + "\\" + "m" + ".json");
 
-            streamReaderS.Close();
-            streamReaderM.Close();
+//            string dataS = streamReaderS.ReadToEnd();
+//            string dataM = streamReaderM.ReadToEnd();
 
-            var s = JsonUtility.FromJson<Mesh>(dataS);
-            var m = JsonUtility.FromJson<Mesh>(dataM);
+//            streamReaderS.Close();
+//            streamReaderM.Close();
 
-            var result = new MeshFilter();
-            result.sharedMesh = s;
-            result.mesh = m;
+//            var s = JsonUtility.FromJson<Mesh>(dataS);
+//            var m = JsonUtility.FromJson<Mesh>(dataM);
 
-            return result;
-        }
-        return null;
-    }
-}*/
+//            var result = new MeshFilter();
+//            result.sharedMesh = s;
+//            result.mesh = m;
+
+//            return result;
+//        }
+//        return null;
+//    }
+//}*/
