@@ -1,33 +1,26 @@
 #if UNITY_EDITOR
+using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 #endif
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class NewMeshManager : MonoBehaviour
+public class MeshManager : MonoBehaviour
 {
-    private GameObject _go;
     private MeshFilter _meshFilter = default;
-    public MeshFilter MeshFilter => _meshFilter;
 
-    public Mesh _myMesh;
-
-    private Mesh MyMesh => _myMesh;
+    private Mesh _myMesh;
 
     private MeshRenderer _meshRenderer;
-
-    public MeshRenderer MeshRenderer;
 
     public Material _meshMaterial;
 
     private Vector3[] _myVertices = default;
 
-    // public Vector3[] MyVertices => _myVertices;
-
     private int[] _myTriangles = default;
 
-    // public static int[] MyTriangles => _myTriangles;
+    Vector2[] _myUVs = default;
 
     // private float[] _radiuses;
 
@@ -54,35 +47,24 @@ public class NewMeshManager : MonoBehaviour
 
     [SerializeField] private string _path;
 
-    // private int _num = 0;
-
-    // private string _meshName;
-
-    public static bool _isFinished;
-
-    private SaveManager _saveManager;
+    // public static bool _isFinished;
 
     private SaveData _saveData;
 
     public SaveData SaveData => _saveData;
 
-    /*private string _filePath;
-    private SaveData _saveData;*/
-
+    [SerializeField]
+    private Color[] _setColor = new Color[6];
 
     [ContextMenu("Make mesh from model")]
 
     private void Awake()
     {
+        _myMesh = new Mesh();
         _saveData = new SaveData();
-        //_saveManager = new SaveManager();
-        //_saveManager.Initialize();
         NewSaveManager.Initialize();
         _meshRenderer = GetComponent<MeshRenderer>();
         _meshFilter = gameObject.GetComponent<MeshFilter>();
-        _myMesh = new Mesh();
-
-        // _data = new SaveData.WeaponData();
     }
 
     void Start()
@@ -93,9 +75,11 @@ public class NewMeshManager : MonoBehaviour
         }
 
         // _radiuses = new float[_nVertices];   
-        _meshMaterial = _meshRenderer.material;
+        _meshRenderer.material = _meshMaterial;
 
         _myVertices = new Vector3[_nVertices];
+
+        _myUVs = new Vector2[_nVertices];
 
         Vector3[] myNormals = new Vector3[_nVertices];
 
@@ -126,6 +110,21 @@ public class NewMeshManager : MonoBehaviour
             _myVertices[i].Set(_x0 - x, _y0 + y, 0);
             myNormals[i] = Vector3.back;
         }
+
+        //for(int i = 0; i <= _nVertices; i++)
+        //{
+        //    float v = (float)i / _nVertices;
+        //    int p0 = i * (_nVertices + 1);
+
+        //    for(int j = 0; j <= _nVertices; i++)
+        //    {
+        //        float u = (float)j / _nVertices;
+        //        int pi = p0 + j;
+
+        //        _myUVs[pi].Set(u, v);
+        //    }
+        //}
+
         _myMesh.SetVertices(_myVertices);
 
         _myMesh.SetNormals(myNormals);
@@ -153,11 +152,11 @@ public class NewMeshManager : MonoBehaviour
         }
 
         _myMesh.SetTriangles(_myTriangles, 0);
-
+        _myMesh.SetUVs(0, _myUVs);
+        // _myMesh.SetColors(new Color[] { _setColor[0], _setColor[1], _setColor[2], _setColor[3], _setColor[4], _setColor[5] });
+        _meshFilter.sharedMesh = _myMesh;
+        // _meshRenderer.material = new Material(Shader.Find("Unlit/VertexColorShader"));
         _meshFilter.mesh = _myMesh;
-
-        Debug.Log(_myVertices);
-        Debug.Log(_myTriangles);
     }
     void Update()
     {
@@ -169,10 +168,10 @@ public class NewMeshManager : MonoBehaviour
 
     void Calculation()
     {
-        if (_isFinished)
-        {
-            return;
-        }
+        //if (_isFinished)
+        //{
+        //    return;
+        //}
 
         Vector3 mousePos = Input.mousePosition;
         var worldPos = Camera.main.ScreenToWorldPoint(mousePos);
@@ -216,8 +215,6 @@ public class NewMeshManager : MonoBehaviour
             // Debug.Log($"ˆê”Ô‹ß‚¢’¸“_{_indexNum}‚ª”½‰ž‚·‚é‹——£‚Í{_radiuses[_radiusIndexNum]}‚Å‚·");
 
             _myMesh.SetVertices(_myVertices);
-
-            //MakeMesh();
         }
         else
         {
@@ -269,9 +266,8 @@ public class NewMeshManager : MonoBehaviour
             NewSaveManager.ResetSaveData(f);
         }
     }
-
-    public void OnAddSaveData()
-    {
-        
-    }
 }
+
+
+
+
