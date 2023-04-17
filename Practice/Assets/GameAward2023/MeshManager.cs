@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 
 public class MeshManager : MonoBehaviour
 {
+    [SerializeField] GameObject _outlineObj;
     private MeshFilter _meshFilter = default;
 
     private Mesh _myMesh;
@@ -19,6 +20,10 @@ public class MeshManager : MonoBehaviour
     private Vector3[] _myVertices = default;
 
     private int[] _myTriangles = default;
+
+    private int _uvVertices = default;
+
+    private Vector3[] _myUvVertices = default;
 
     Vector2[] _myUVs = default;
 
@@ -39,6 +44,9 @@ public class MeshManager : MonoBehaviour
     [SerializeField, Tooltip("大きさ"), Range(0, 10)]
     private float _radius = 2f;
 
+    [SerializeField, Tooltip("アウトライン用の半径"), Range(0, 10)]
+    private float _outlineRadius = default;
+
     private int _indexNum = default;
 
     // private int _radiusIndexNum = default;
@@ -54,7 +62,7 @@ public class MeshManager : MonoBehaviour
     public SaveData SaveData => _saveData;
 
     [SerializeField]
-    private Color[] _setColor = new Color[6];
+    private List<Color> _setColor = new List<Color>();
 
     [ContextMenu("Make mesh from model")]
 
@@ -69,94 +77,7 @@ public class MeshManager : MonoBehaviour
 
     void Start()
     {
-        foreach (var f in SaveManager._weaponFileList)
-        {
-            NewSaveManager.Load(f);
-        }
-
-        // _radiuses = new float[_nVertices];   
-        _meshRenderer.material = _meshMaterial;
-
-        _myVertices = new Vector3[_nVertices];
-
-        _myUVs = new Vector2[_nVertices];
-
-        Vector3[] myNormals = new Vector3[_nVertices];
-
-        // 一辺当たりの中心角の 1 / 2
-        float halfStep = Mathf.PI / _nVertices;
-
-        //for(int i = 0; i < _nVertices; i++)
-        //{
-        //    _radiuses[i] = _radius;
-        //    Debug.Log(_radiuses[i]);
-        //}
-
-        for (int i = 0; i < _nVertices; i++)
-        {
-            // 中心から i 番目の頂点に向かう角度
-            float angle = (i + 1) * halfStep;
-
-            float x = _radius * Mathf.Cos(angle);
-
-            float y = _radius * Mathf.Sin(angle);
-            // 下側の頂点の位置と法線
-            _myVertices[i].Set(_x0 - x, _y0 - y, 0);
-            myNormals[i] = Vector3.back;
-            i++;
-            // 最後の頂点を生成したら終了
-            if (i >= _nVertices) break;
-            // 上側の頂点の位置と法線
-            _myVertices[i].Set(_x0 - x, _y0 + y, 0);
-            myNormals[i] = Vector3.back;
-        }
-
-        //for(int i = 0; i <= _nVertices; i++)
-        //{
-        //    float v = (float)i / _nVertices;
-        //    int p0 = i * (_nVertices + 1);
-
-        //    for(int j = 0; j <= _nVertices; i++)
-        //    {
-        //        float u = (float)j / _nVertices;
-        //        int pi = p0 + j;
-
-        //        _myUVs[pi].Set(u, v);
-        //    }
-        //}
-
-        _myMesh.SetVertices(_myVertices);
-
-        _myMesh.SetNormals(myNormals);
-
-        int nPolygons = _nVertices - 2;
-        int nTriangles = nPolygons * 3;
-
-        _myTriangles = new int[nTriangles];
-
-        for (int i = 0; i < nPolygons; i++)
-        {
-            // １つ目の三角形の最初の頂点の頂点番号の格納先
-            int firstI = i * 3;
-            // １つ目の三角形の頂点番号
-            _myTriangles[firstI + 0] = i;
-            _myTriangles[firstI + 1] = i + 1;
-            _myTriangles[firstI + 2] = i + 2;
-            i++;
-            // 最後の頂点番号を格納したら終了
-            if (i >= nPolygons) break;
-            // ２つ目の三角形の頂点番号
-            _myTriangles[firstI + 3] = i + 2;
-            _myTriangles[firstI + 4] = i + 1;
-            _myTriangles[firstI + 5] = i;
-        }
-
-        _myMesh.SetTriangles(_myTriangles, 0);
-        _myMesh.SetUVs(0, _myUVs);
-        // _myMesh.SetColors(new Color[] { _setColor[0], _setColor[1], _setColor[2], _setColor[3], _setColor[4], _setColor[5] });
-        _meshFilter.sharedMesh = _myMesh;
-        // _meshRenderer.material = new Material(Shader.Find("Unlit/VertexColorShader"));
-        _meshFilter.mesh = _myMesh;
+        CreateMesh();
     }
     void Update()
     {
@@ -168,6 +89,7 @@ public class MeshManager : MonoBehaviour
 
     void Calculation()
     {
+        _myMesh.SetColors(_setColor);
         //if (_isFinished)
         //{
         //    return;
@@ -198,10 +120,14 @@ public class MeshManager : MonoBehaviour
         float disX = worldPos.x - _myVertices[_indexNum].x;
         float disY = worldPos.y - _myVertices[_indexNum].y;
 
-        if (Mathf.Abs(disX) < _radius && Mathf.Abs(disY) < _radius /*disX < _radiuses[_radiusIndexNum] && disY < _radiuses[_radiusIndexNum]
+        // float outlineDisX = worldPos.x - _outVertices[_indexNum].x;
+        // float outlineDisY = worldPos.x - _outVertices[_indexNum].y;
+
+        if (Mathf.Abs(disX) < _radius / 4 && Mathf.Abs(disY) < _radius / 4 /*disX < _radiuses[_radiusIndexNum] && disY < _radiuses[_radiusIndexNum]
                     dis2 < _radius*/)
         {
             _myVertices[_indexNum] -= new Vector3(disX, disY, 0);
+            // _outVertices[_indexNum] -= new Vector3(outlineDisX, outlineDisY, 0);
             //_myVertices[_indexNum] = _closeMesh;
             // _radiuses[_radiusIndexNum] -= 0.1f;
 
@@ -214,12 +140,13 @@ public class MeshManager : MonoBehaviour
 
             // Debug.Log($"一番近い頂点{_indexNum}が反応する距離は{_radiuses[_radiusIndexNum]}です");
 
-            _myMesh.SetVertices(_myVertices);
         }
         else
         {
             Debug.Log($"叩いた場所が一番近い頂点{_indexNum}から離れすぎてます");
         }
+
+        _myMesh.SetVertices(_myVertices);
         _dis = 1000f;
     }
     public void OnSaveData(string weapon)
@@ -265,6 +192,95 @@ public class MeshManager : MonoBehaviour
         {
             NewSaveManager.ResetSaveData(f);
         }
+    }
+
+    public void CreateMesh()
+    {
+        foreach (var f in SaveManager._weaponFileList)
+        {
+            NewSaveManager.Load(f);
+        }
+
+        // _radiuses = new float[_nVertices];   
+        _meshRenderer.material = _meshMaterial;
+
+        _myVertices = new Vector3[_nVertices];
+
+        _myUVs = new Vector2[_nVertices];
+
+        Vector3[] myNormals = new Vector3[_nVertices];
+
+        // 一辺当たりの中心角の 1 / 2
+        float halfStep = Mathf.PI / _nVertices;
+
+        //for(int i = 0; i < _nVertices; i++)
+        //{
+        //    _radiuses[i] = _radius;
+        //    Debug.Log(_radiuses[i]);
+        //}
+
+        for (int i = 0; i < _nVertices; i++)
+        {
+            // 中心から i 番目の頂点に向かう角度
+            float angle = (i + 1) * halfStep;
+
+            float x = _radius * Mathf.Cos(angle);
+
+            float y = _radius * Mathf.Sin(angle);
+            // 下側の頂点の位置と法線
+            _myVertices[i].Set(_x0 - x, _y0 - y, 0);
+            myNormals[i] = Vector3.forward;
+            i++;
+            // 最後の頂点を生成したら終了
+            if (i >= _nVertices) break;
+            // 上側の頂点の位置と法線
+            _myVertices[i].Set(_x0 - x, _y0 + y, 0);
+            myNormals[i] = Vector3.forward;
+        }
+
+        _myMesh.SetVertices(_myVertices);
+
+        _myMesh.SetNormals(myNormals);
+
+        int nPolygons = _nVertices - 2;
+        int nTriangles = nPolygons * 3;
+
+        _myTriangles = new int[nTriangles];
+
+        for (int i = 0; i < nPolygons; i++)
+        {
+            // １つ目の三角形の最初の頂点の頂点番号の格納先
+            int firstI = i * 3;
+            // １つ目の三角形の頂点番号
+            _myTriangles[firstI + 0] = i;
+            _myTriangles[firstI + 1] = i + 1;
+            _myTriangles[firstI + 2] = i + 2;
+            i++;
+            // 最後の頂点番号を格納したら終了
+            if (i >= nPolygons) break;
+            // ２つ目の三角形の頂点番号
+            _myTriangles[firstI + 3] = i + 2;
+            _myTriangles[firstI + 4] = i + 1;
+            _myTriangles[firstI + 5] = i;
+        }
+
+        _myMesh.SetTriangles(_myTriangles, 0);
+
+        Vector2[] uvs = new Vector2[_nVertices];
+
+        //for (int i = 0; i < _nVertices; i++)
+        //{
+        //    float angle = i * Mathf.PI * 2f / _nVertices;
+        //    float x = (_myVertices[i].x - _x0) / (_radius * 2f) + 0.5f;
+        //    float y = (_myVertices[i].y - _y0) / (_radius * 2f) + 0.5f;
+        //    uvs[i] = new Vector2(x, y);
+        //}
+
+        // _myMesh.SetUVs(0, uvs);
+        _myMesh.SetColors(_setColor);
+        _meshFilter.sharedMesh = _myMesh;
+        _meshRenderer.material = new Material(Shader.Find("Unlit/VertexColorShader"));
+        _meshFilter.mesh = _myMesh;
     }
 }
 
