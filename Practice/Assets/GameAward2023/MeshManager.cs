@@ -81,6 +81,8 @@ public class MeshManager : MonoBehaviour
     }
     void Update()
     {
+        _myMesh.SetColors(_setColor);
+       
         if (Input.GetMouseButtonDown(0))
         {
             Calculation();
@@ -89,7 +91,6 @@ public class MeshManager : MonoBehaviour
 
     void Calculation()
     {
-        _myMesh.SetColors(_setColor);
         //if (_isFinished)
         //{
         //    return;
@@ -123,7 +124,7 @@ public class MeshManager : MonoBehaviour
         // float outlineDisX = worldPos.x - _outVertices[_indexNum].x;
         // float outlineDisY = worldPos.x - _outVertices[_indexNum].y;
 
-        if (Mathf.Abs(disX) < _radius / 4 && Mathf.Abs(disY) < _radius / 4 /*disX < _radiuses[_radiusIndexNum] && disY < _radiuses[_radiusIndexNum]
+        if (Mathf.Abs(disX) < _radius / 3 && Mathf.Abs(disY) < _radius / 3 /*disX < _radiuses[_radiusIndexNum] && disY < _radiuses[_radiusIndexNum]
                     dis2 < _radius*/)
         {
             _myVertices[_indexNum] -= new Vector3(disX, disY, 0);
@@ -156,6 +157,7 @@ public class MeshManager : MonoBehaviour
             _saveData._prefabName = weapon;
             _saveData._myVertices = _myVertices;
             _saveData._myTriangles = _myTriangles;
+            _saveData._colorList = _setColor;
             NewSaveManager.Save(NewSaveManager.TAIKENFILEPATH, _saveData);
         }
         else if (weapon == "Souken")
@@ -163,6 +165,7 @@ public class MeshManager : MonoBehaviour
             _saveData._prefabName = weapon;
             _saveData._myVertices = _myVertices;
             _saveData._myTriangles = _myTriangles;
+            _saveData._colorList = _setColor;
             NewSaveManager.Save(NewSaveManager.SOUKENFILEPATH, _saveData);
         }
         else if (weapon == "Hammer")
@@ -170,6 +173,7 @@ public class MeshManager : MonoBehaviour
             _saveData._prefabName = weapon;
             _saveData._myVertices = _myVertices;
             _saveData._myTriangles = _myTriangles;
+            _saveData._colorList = _setColor;
             NewSaveManager.Save(NewSaveManager.HAMMERFILEPATH, _saveData);
         }
         else if (weapon == "Yari")
@@ -177,6 +181,7 @@ public class MeshManager : MonoBehaviour
             _saveData._prefabName = weapon;
             _saveData._myVertices = _myVertices;
             _saveData._myTriangles = _myTriangles;
+            _saveData._colorList = _setColor;
             NewSaveManager.Save(NewSaveManager.YARIFILEPATH, _saveData);
         }
     }

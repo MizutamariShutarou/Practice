@@ -74,7 +74,7 @@ public class SelectWeapon : MonoBehaviour
         Mesh mesh = new Mesh();
         mesh.vertices = data._myVertices;
         mesh.triangles = data._myTriangles;
-
+        mesh.SetColors(data._colorList);
         //mesh.vertices = _saveManager.SaveData._myVertices;
         //mesh.triangles = _saveManager.SaveData._myTriangles;
 
@@ -84,31 +84,16 @@ public class SelectWeapon : MonoBehaviour
         meshFilter.mesh = mesh;
 
         _myRenderer = _go.AddComponent<MeshRenderer>();
-        _myRenderer.material = _material;
+        _myRenderer.material = new Material(Shader.Find("Unlit/VertexColorShader"));
     }
     public void CreateSouken()
     {
-        //_saveManager.Load(SaveManager.Souken);
-        //Mesh mesh = new Mesh();
-
-        //mesh.vertices = _saveManager.SaveData._myVertices;
-        //mesh.triangles = _saveManager.SaveData._myTriangles;
-
-        //_go = new GameObject("Souken");
-
-        //MeshFilter meshFilter = _go.AddComponent<MeshFilter>();
-        //meshFilter.mesh = mesh;
-
-        //_myRenderer = _go.AddComponent<MeshRenderer>();
-        //_myRenderer.material = _material;
-
         SaveData data = NewSaveManager.Load(NewSaveManager.SOUKENFILEPATH);
-        Debug.Log(data._prefabName);
-        Debug.Log(data._myVertices);
-
+  
         Mesh mesh = new Mesh();
         mesh.vertices = data._myVertices;
         mesh.triangles = data._myTriangles;
+        mesh.SetColors(data._colorList);
 
         //mesh.vertices = _saveManager.SaveData._myVertices;
         //mesh.triangles = _saveManager.SaveData._myTriangles;
@@ -120,30 +105,16 @@ public class SelectWeapon : MonoBehaviour
 
         _myRenderer = _go.AddComponent<MeshRenderer>();
         _myRenderer.material = _material;
+        _myRenderer.material = new Material(Shader.Find("Unlit/VertexColorShader"));
     }
     public void CreateHammer()
     {
-        //_saveManager.Load(SaveManager.Hammer);
-        //Mesh mesh = new Mesh();
-
-        //mesh.vertices = _saveManager.SaveData._myVertices;
-        //mesh.triangles = _saveManager.SaveData._myTriangles;
-
-        //_go = new GameObject("Hammer");
-
-        //MeshFilter meshFilter = _go.AddComponent<MeshFilter>();
-        //meshFilter.mesh = mesh;
-
-        //_myRenderer = _go.AddComponent<MeshRenderer>();
-        //_myRenderer.material = _material;
-
         SaveData data = NewSaveManager.Load(NewSaveManager.HAMMERFILEPATH);
-        Debug.Log(data._prefabName);
-        Debug.Log(data._myVertices);
 
         Mesh mesh = new Mesh();
         mesh.vertices = data._myVertices;
         mesh.triangles = data._myTriangles;
+        mesh.SetColors(data._colorList);
 
         //mesh.vertices = _saveManager.SaveData._myVertices;
         //mesh.triangles = _saveManager.SaveData._myTriangles;
@@ -155,23 +126,10 @@ public class SelectWeapon : MonoBehaviour
 
         _myRenderer = _go.AddComponent<MeshRenderer>();
         _myRenderer.material = _material;
+        _myRenderer.material = new Material(Shader.Find("Unlit/VertexColorShader"));
     }
     public void CreateYari()
     {
-        //_saveManager.Load(SaveManager.Yari);
-        //Mesh mesh = new Mesh();
-
-        //mesh.vertices = _saveManager.SaveData._myVertices;
-        //mesh.triangles = _saveManager.SaveData._myTriangles;
-
-        //_go = new GameObject("Yari");
-
-        //MeshFilter meshFilter = _go.AddComponent<MeshFilter>();
-        //meshFilter.mesh = mesh;
-
-        //_myRenderer = _go.AddComponent<MeshRenderer>();
-        //_myRenderer.material = _material;
-
         SaveData data = NewSaveManager.Load(NewSaveManager.YARIFILEPATH);
         Debug.Log(data._prefabName);
         Debug.Log(data._myVertices);
@@ -179,6 +137,7 @@ public class SelectWeapon : MonoBehaviour
         Mesh mesh = new Mesh();
         mesh.vertices = data._myVertices;
         mesh.triangles = data._myTriangles;
+        mesh.SetColors(data._colorList);
 
         //mesh.vertices = _saveManager.SaveData._myVertices;
         //mesh.triangles = _saveManager.SaveData._myTriangles;
@@ -190,5 +149,6 @@ public class SelectWeapon : MonoBehaviour
 
         _myRenderer = _go.AddComponent<MeshRenderer>();
         _myRenderer.material = _material;
+        _myRenderer.material = new Material(Shader.Find("Unlit/VertexColorShader"));
     }
 }
