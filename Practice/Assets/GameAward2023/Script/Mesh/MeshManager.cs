@@ -19,13 +19,15 @@ public class MeshManager : MonoBehaviour
 
     private Vector3[] _myVertices = default;
 
+    public Vector3[] MyVertices { get; set; }
+
     private int[] _myTriangles = default;
 
-    private int _uvVertices = default;
+    //private int _uvVertices = default;
 
-    private Vector3[] _myUvVertices = default;
+    //private Vector3[] _myUvVertices = default;
 
-    Vector2[] _myUVs = default;
+    //Vector2[] _myUVs = default;
 
     // private float[] _radiuses;
 
@@ -34,6 +36,8 @@ public class MeshManager : MonoBehaviour
 
     [SerializeField, Tooltip("’¸“_”")]
     private int _nVertices = 6;
+
+    public int NVertices => _nVertices;
 
     [SerializeField, Tooltip("’†S‚ÌxÀ•W")]
     private float _x0 = 0f;
@@ -210,8 +214,6 @@ public class MeshManager : MonoBehaviour
         _meshRenderer.material = _meshMaterial;
 
         _myVertices = new Vector3[_nVertices];
-
-        _myUVs = new Vector2[_nVertices];
 
         Vector3[] myNormals = new Vector3[_nVertices];
 

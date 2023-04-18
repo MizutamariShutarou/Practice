@@ -27,7 +27,7 @@ class LocalData
 
     static public void Save<T>(string file, T data)
     {
-        var json = JsonUtility.ToJson(data);
+        var json = JsonUtility.ToJson(data, true);
         byte[] arr = Encoding.UTF8.GetBytes(json);
 #if RELEASE
         arr = AesEncrypt(arr);
