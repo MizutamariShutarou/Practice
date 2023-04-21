@@ -1,5 +1,5 @@
 using UnityEngine;
-using System.Threading;
+using UnityEngine.UI;
 
 public class ChangeScene : MonoBehaviour
 {
@@ -15,5 +15,6 @@ public class ChangeScene : MonoBehaviour
     private void SceneChange()
     {
         _loadSceneManager.ChangeScene("GameScene");
+        Debug.Log("1");
     }
 }

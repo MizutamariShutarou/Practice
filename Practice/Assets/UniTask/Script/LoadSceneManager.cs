@@ -13,9 +13,10 @@ public class LoadSceneManager : MonoBehaviour
     public void ChangeScene(string name)
     {
         _cts = new CancellationTokenSource();
-        LoadSceneExecute(name, _cts.Token).Forget();
+        LoadSceneExecute(name, _cts.Token).Forget(); // await‚ð•t‚¯‚È‚©‚Á‚½‚ç3?1?2
+        Debug.Log("3");
     }
-    private async UniTaskVoid LoadSceneExecute(string name, CancellationToken ct)
+    private async UniTask LoadSceneExecute(string name, CancellationToken ct)
     {
         AsyncOperation operation = SceneManager.LoadSceneAsync(name);
         operation.allowSceneActivation = false;
@@ -30,5 +31,6 @@ public class LoadSceneManager : MonoBehaviour
         await UniTask.Delay(2000, cancellationToken : ct);
         _canvas.gameObject.SetActive(false);
         operation.allowSceneActivation = true;
+        Debug.Log("2");
     }
 }
