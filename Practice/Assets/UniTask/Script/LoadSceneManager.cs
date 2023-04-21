@@ -10,10 +10,10 @@ public class LoadSceneManager : MonoBehaviour
     [SerializeField] Image _image = default;
 
     CancellationTokenSource _cts = default;
-    public void ChangeScene(string name)
+    public async void ChangeScene(string name)
     {
         _cts = new CancellationTokenSource();
-        LoadSceneExecute(name, _cts.Token).Forget(); // awaitを付けなかったら3➔1➔2
+        await LoadSceneExecute(name, _cts.Token); // awaitを付けなかったら3➔1➔2
         Debug.Log("3");
     }
     private async UniTask LoadSceneExecute(string name, CancellationToken ct)
