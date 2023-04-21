@@ -6,11 +6,14 @@ using UnityEngine.SceneManagement;
 
 public class LoadSceneManager : MonoBehaviour
 {
-    [SerializeField] Canvas _canvas;
-    [SerializeField] Image _image;
-    public void ChangeScene(string name, CancellationToken ct)
+    [SerializeField] Canvas _canvas = default;
+    [SerializeField] Image _image = default;
+
+    CancellationTokenSource _cts = default;
+    public void ChangeScene(string name)
     {
-        LoadSceneExecute(name, ct).Forget();
+        _cts = new CancellationTokenSource();
+        LoadSceneExecute(name, _cts.Token).Forget();
     }
     private async UniTaskVoid LoadSceneExecute(string name, CancellationToken ct)
     {
@@ -22,9 +25,9 @@ public class LoadSceneManager : MonoBehaviour
         _canvas.gameObject.SetActive(true);
 
         _image.fillAmount = operation.progress;
-        await UniTask.WaitUntil(() => operation.progress >= 0.9f);
+        await UniTask.WaitUntil(() => operation.progress >= 0.9f, cancellationToken : ct);
         _image.fillAmount = 1f;
-        await UniTask.Delay(2000, cancellationToken: ct);
+        await UniTask.Delay(2000, cancellationToken : ct);
         _canvas.gameObject.SetActive(false);
         operation.allowSceneActivation = true;
     }

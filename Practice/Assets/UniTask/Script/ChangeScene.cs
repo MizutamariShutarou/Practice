@@ -3,16 +3,7 @@ using System.Threading;
 
 public class ChangeScene : MonoBehaviour
 {
-    [SerializeField] LoadSceneManager _loadSceneManager;
-
-    CancellationTokenSource _cts;
-
-    CancellationToken _ct;
-    private void Start()
-    {
-        _cts = new CancellationTokenSource();
-        _ct = _cts.Token;
-    }
+    [SerializeField] LoadSceneManager _loadSceneManager = default;
 
     private void Update()
     {
@@ -23,6 +14,6 @@ public class ChangeScene : MonoBehaviour
     }
     private void SceneChange()
     {
-        _loadSceneManager.ChangeScene("GameScene", _ct);
+        _loadSceneManager.ChangeScene("GameScene");
     }
 }
