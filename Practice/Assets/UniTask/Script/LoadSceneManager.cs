@@ -1,4 +1,4 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
 using System.Threading;
@@ -13,7 +13,7 @@ public class LoadSceneManager : MonoBehaviour
     public void ChangeScene(string name)
     {
         _cts = new CancellationTokenSource();
-        LoadSceneExecute(name, _cts.Token).Forget(); // await‚ğ•t‚¯‚È‚©‚Á‚½‚ç3?1?2
+        LoadSceneExecute(name, _cts.Token).Forget(); // awaitã‚’ä»˜ã‘ãªã‹ã£ãŸã‚‰3â”1â”2
         Debug.Log("3");
     }
     private async UniTask LoadSceneExecute(string name, CancellationToken ct)
