@@ -18,15 +18,15 @@ public class LoadSceneManager : MonoBehaviour
     private async UniTaskVoid LoadSceneExecute(string name, CancellationToken ct)
     {
         AsyncOperation operation = SceneManager.LoadSceneAsync(name);
-
         operation.allowSceneActivation = false;
 
         _image.fillAmount = 0f;
         _canvas.gameObject.SetActive(true);
-
         _image.fillAmount = operation.progress;
+
         await UniTask.WaitUntil(() => operation.progress >= 0.9f, cancellationToken : ct);
         _image.fillAmount = 1f;
+
         await UniTask.Delay(2000, cancellationToken : ct);
         _canvas.gameObject.SetActive(false);
         operation.allowSceneActivation = true;
