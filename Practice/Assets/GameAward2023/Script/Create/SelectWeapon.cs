@@ -16,56 +16,6 @@ public class SelectWeapon : MonoBehaviour
     {
         _saveManager = new SaveManager();
     }
-    //public void Select(string weapon)
-    //{
-    //    if (weapon == "Taiken")
-    //    {
-    //        _saveManager.Load(SaveManager.Taiken);
-
-    //        _myMesh.vertices = _saveManager.SaveData._myVertices;
-    //        _myMesh.triangles = _saveManager.SaveData._myTriangles;
-
-    //        CreateMesh(weapon);
-    //    }
-    //    else if (weapon == "Souken")
-    //    {
-    //        _saveManager.Load(SaveManager.Souken);
-
-    //        _myMesh.vertices = _saveManager.SaveData._myVertices;
-    //        _myMesh.triangles = _saveManager.SaveData._myTriangles;
-
-    //        CreateMesh(weapon);
-    //    }
-    //    else if (weapon == "Hammer")
-    //    {
-    //        _saveManager.Load(SaveManager.Hammer);
-
-    //        _myMesh.vertices = _saveManager.SaveData._myVertices;
-    //        _myMesh.triangles = _saveManager.SaveData._myTriangles;
-
-    //        CreateMesh(weapon);
-    //    }
-    //    else if (weapon == "Yari")
-    //    {
-    //        _saveManager.Load(SaveManager.Yari);
-
-    //        _myMesh.vertices = _saveManager.SaveData._myVertices;
-    //        _myMesh.triangles = _saveManager.SaveData._myTriangles;
-
-    //        CreateMesh(weapon);
-    //    }
-        
-    //}
-
-    //private void CreateMesh(string weapon)
-    //{
-    //    _go = new GameObject(weapon + "MeshObj");
-    //    _meshFilter = _go.AddComponent<MeshFilter>();
-    //    _meshFilter.mesh = _myMesh;
-    //    _myRenderer = _go.AddComponent<MeshRenderer>();
-    //    _myRenderer.material = _material;
-    //}
-
     public void CreateTaiken()
     {
         SaveData data = NewSaveManager.Load(NewSaveManager.TAIKENFILEPATH);
