@@ -6,15 +6,23 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 
+/// <summary>
+/// TODO : 双剣の時のメッシュ2個作成をする ?　後回し
+///      : メッシュが動いてもめり込み判定が正常に動くようにする  ?　完了
+///      : GameObjectを生成するようにする　?　双剣以外完了
+/// </summary>
 public class MeshManager : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject _a;
+
     [SerializeField, Tooltip("双剣ver")]
     private bool _isSouken = default;
 
     private MeshFilter _meshFilter = default;
 
     private Mesh _myMesh;
-    public Mesh Mesh => _myMesh;
+    public Mesh MyMesh => _myMesh;
 
     private MeshRenderer _meshRenderer;
 
@@ -36,17 +44,11 @@ public class MeshManager : MonoBehaviour
 
     public int NVertices => _nVertices;
 
-    [SerializeField, Tooltip("中心のx座標")]
-    private float _x0 = 0f;
+    [SerializeField, Tooltip("中心の座標")]
+    private Vector2 _centerPos = default;
 
-    [SerializeField, Tooltip("中心のy座標")]
-    private float _y0 = 0f;
-
-    [SerializeField, Tooltip("双剣用の中心のx座標")]
-    private float _sX = 0f;
-
-    [SerializeField, Tooltip("双剣用の中心のx座標")]
-    private float _sY = 0f;
+    [SerializeField, Tooltip("双剣用の中心の座標")]
+    private Vector3 _sCenterPos = default;
 
     [SerializeField, Tooltip("大きさ"), Range(0, 10)]
     private float _radius = 2f;
@@ -55,8 +57,6 @@ public class MeshManager : MonoBehaviour
     private float _minRange = 1.5f;
 
     private int _indexNum = default;
-
-    // private int _radiusIndexNum = default;
 
     private float _dis = 1000f;
 
@@ -75,30 +75,34 @@ public class MeshManager : MonoBehaviour
     {
         _myMesh = new Mesh();
         _saveData = new SaveData();
-        NewSaveManager.Initialize();
-        _meshRenderer = GetComponent<MeshRenderer>();
-        _meshFilter = gameObject.GetComponent<MeshFilter>();
+        SaveManager.Initialize();
     }
 
     void Start()
     {
-        if(!_isSouken)
+        foreach (var f in SaveManager._weaponFileList)
+        {
+            SaveManager.Load(f);
+        }
+
+        if (!_isSouken)
         {
             CreateMesh();
         }
         else
         {
-            CreateSouken(_sX, _sY);
-            CreateSouken(-_sX, _sY);
+            CreateSouken("Souken1", _sCenterPos.x, _sCenterPos.y);
+            CreateSouken("Souken2", -_sCenterPos.x, _sCenterPos.y);
         }
     }
     void Update()
     {
         _myMesh.SetColors(_setColor);
-       
+        _a.transform.position = _centerPos;
         if (Input.GetMouseButtonDown(0))
         {
             Calculation();
+            _centerPos = GetCentroid(_myVertices);
         }
     }
 
@@ -113,8 +117,6 @@ public class MeshManager : MonoBehaviour
         var worldPos = Camera.main.ScreenToWorldPoint(mousePos);
         worldPos.z = 0;
 
-        Debug.Log(worldPos);
-
         for (int i = 0; i < _myVertices.Length; i++)
         {
             float dis = Vector3.Distance(worldPos, _myVertices[i]);
@@ -122,20 +124,17 @@ public class MeshManager : MonoBehaviour
             {
                 _dis = dis;
                 _indexNum = i;
-                //_radiusIndexNum = i;
             }
         }
 
-        // 以下変数名を考えたい
-
         // タップ位置と近い頂点との距離(ti)
-        float tiDis = Vector3.Distance(worldPos, new Vector3(_x0, _y0));
+        float tiDis = Vector3.Distance(worldPos, _centerPos);
 
         // 中心と近い頂点との距離(io)
-        float ioDis = Vector3.Distance(_myVertices[_indexNum], new Vector3(_x0, _y0));
+        float ioDis = Vector3.Distance(_myVertices[_indexNum], _centerPos);
 
         // 中心とタップ位置との距離(to)
-        float toDis = Vector3.Distance(worldPos, new Vector3(_x0, _y0));
+        float toDis = Vector3.Distance(worldPos, _centerPos);
 
         float disX = worldPos.x - _myVertices[_indexNum].x;
         float disY = worldPos.y - _myVertices[_indexNum].y;
@@ -149,23 +148,9 @@ public class MeshManager : MonoBehaviour
             return;
         }
 
-        if (Mathf.Abs(disX) < _radius / 3 && Mathf.Abs(disY) < _radius / 3 /*disX < _radiuses[_radiusIndexNum] && disY < _radiuses[_radiusIndexNum]
-                    dis2 < _radius*/)
+        if (Mathf.Abs(disX) < _radius / 3 && Mathf.Abs(disY) < _radius / 3)
         {
             _myVertices[_indexNum] -= new Vector3(disX, disY, 0);
-            // _outVertices[_indexNum] -= new Vector3(outlineDisX, outlineDisY, 0);
-            //_myVertices[_indexNum] = _closeMesh;
-            // _radiuses[_radiusIndexNum] -= 0.1f;
-
-            //if (_radiuses[_radiusIndexNum] <= 0)
-            //{
-            //    _radiuses[_radiusIndexNum] = 0.02f;
-            //    Debug.Log($"一番近い頂点{_indexNum}が反応する距離が最小値です");
-
-            //}
-
-            // Debug.Log($"一番近い頂点{_indexNum}が反応する距離は{_radiuses[_radiusIndexNum]}です");
-
         }
         else
         {
@@ -184,7 +169,7 @@ public class MeshManager : MonoBehaviour
             _saveData._myVertices = _myVertices;
             _saveData._myTriangles = _myTriangles;
             _saveData._colorList = _setColor;
-            NewSaveManager.Save(NewSaveManager.TAIKENFILEPATH, _saveData);
+            SaveManager.Save(SaveManager.TAIKENFILEPATH, _saveData);
         }
         else if (weapon == "Souken")
         {
@@ -192,7 +177,7 @@ public class MeshManager : MonoBehaviour
             _saveData._myVertices = _myVertices;
             _saveData._myTriangles = _myTriangles;
             _saveData._colorList = _setColor;
-            NewSaveManager.Save(NewSaveManager.SOUKENFILEPATH, _saveData);
+            SaveManager.Save(SaveManager.SOUKENFILEPATH, _saveData);
         }
         else if (weapon == "Hammer")
         {
@@ -200,7 +185,7 @@ public class MeshManager : MonoBehaviour
             _saveData._myVertices = _myVertices;
             _saveData._myTriangles = _myTriangles;
             _saveData._colorList = _setColor;
-            NewSaveManager.Save(NewSaveManager.HAMMERFILEPATH, _saveData);
+            SaveManager.Save(SaveManager.HAMMERFILEPATH, _saveData);
         }
         else if (weapon == "Yari")
         {
@@ -208,7 +193,7 @@ public class MeshManager : MonoBehaviour
             _saveData._myVertices = _myVertices;
             _saveData._myTriangles = _myTriangles;
             _saveData._colorList = _setColor;
-            NewSaveManager.Save(NewSaveManager.YARIFILEPATH, _saveData);
+            SaveManager.Save(SaveManager.YARIFILEPATH, _saveData);
         }
     }
 
@@ -219,21 +204,19 @@ public class MeshManager : MonoBehaviour
 
     public void OnResetSaveData()
     {
-        foreach (var f in NewSaveManager._weaponFileList)
+        foreach (var f in SaveManager._weaponFileList)
         {
-            NewSaveManager.ResetSaveData(f);
+            SaveManager.ResetSaveData(f);
         }
     }
 
     public void CreateMesh()
     {
-        foreach (var f in SaveManager._weaponFileList)
-        {
-            NewSaveManager.Load(f);
-        }
+        GameObject go = new GameObject("WeaponBase");
 
-        // _radiuses = new float[_nVertices];   
-        _meshRenderer.material = _meshMaterial;
+        _meshFilter = go.AddComponent<MeshFilter>();
+
+        _meshRenderer = go.AddComponent<MeshRenderer>();
 
         _myVertices = new Vector3[_nVertices];
 
@@ -241,12 +224,6 @@ public class MeshManager : MonoBehaviour
 
         // 一辺当たりの中心角の 1 / 2
         float halfStep = Mathf.PI / _nVertices;
-
-        //for(int i = 0; i < _nVertices; i++)
-        //{
-        //    _radiuses[i] = _radius;
-        //    Debug.Log(_radiuses[i]);
-        //}
 
         for (int i = 0; i < _nVertices; i++)
         {
@@ -257,13 +234,13 @@ public class MeshManager : MonoBehaviour
 
             float y = _radius * Mathf.Sin(angle);
             // 下側の頂点の位置と法線
-            _myVertices[i].Set(_x0 - x, _y0 - y, 0);
+            _myVertices[i].Set(_centerPos.x - x, _centerPos.y - y, 0);
             _myNormals[i] = Vector3.forward;
             i++;
             // 最後の頂点を生成したら終了
             if (i >= _nVertices) break;
             // 上側の頂点の位置と法線
-            _myVertices[i].Set(_x0 - x, _y0 + y, 0);
+            _myVertices[i].Set(_centerPos.x - x, _centerPos.y + y, 0);
             _myNormals[i] = Vector3.forward;
         }
 
@@ -297,15 +274,6 @@ public class MeshManager : MonoBehaviour
 
         Vector2[] uvs = new Vector2[_nVertices];
 
-        //for (int i = 0; i < _nVertices; i++)
-        //{
-        //    float angle = i * Mathf.PI * 2f / _nVertices;
-        //    float x = (_myVertices[i].x - _x0) / (_radius * 2f) + 0.5f;
-        //    float y = (_myVertices[i].y - _y0) / (_radius * 2f) + 0.5f;
-        //    uvs[i] = new Vector2(x, y);
-        //}
-
-        // _myMesh.SetUVs(0, uvs);
         _myMesh.SetColors(_setColor);
         _meshFilter.sharedMesh = _myMesh;
         _meshRenderer.material = new Material(Shader.Find("Unlit/VertexColorShader"));
@@ -313,17 +281,15 @@ public class MeshManager : MonoBehaviour
         _meshMaterial.SetInt("GameObject", (int)UnityEngine.Rendering.CullMode.Off);
     }
 
-    public void CreateSouken(float sX, float sY)
+    private void CreateSouken(string name, float sX, float sY)
     {
-        foreach (var f in SaveManager._weaponFileList)
-        {
-            NewSaveManager.Load(f);
-        }
+        GameObject go = new GameObject(name);
 
+        _meshFilter = go.AddComponent<MeshFilter>();
 
+        _meshRenderer = go.AddComponent<MeshRenderer>();
 
         // _radiuses = new float[_nVertices];   
-        _meshRenderer.material = _meshMaterial;
 
         _myVertices = new Vector3[_nVertices];
 
@@ -331,12 +297,6 @@ public class MeshManager : MonoBehaviour
 
         // 一辺当たりの中心角の 1 / 2
         float halfStep = Mathf.PI / _nVertices;
-
-        //for(int i = 0; i < _nVertices; i++)
-        //{
-        //    _radiuses[i] = _radius;
-        //    Debug.Log(_radiuses[i]);
-        //}
 
         for (int i = 0; i < _nVertices; i++)
         {
@@ -390,6 +350,28 @@ public class MeshManager : MonoBehaviour
         _meshRenderer.material = new Material(Shader.Find("Unlit/VertexColorShader"));
         _meshFilter.mesh = _myMesh;
         _meshMaterial.SetInt("GameObject", (int)UnityEngine.Rendering.CullMode.Off);
+    }
+
+    private Vector3 GetCentroid(Vector3[] vertices)
+    {
+        Vector3 centroid = Vector3.zero;
+        float area = 0f;
+
+        for (int i = 0; i < vertices.Length; i++)
+        {
+            Vector3 currentVertex = vertices[i];
+            Vector3 nextVertex = vertices[(i + 1) % vertices.Length];
+
+            float crossProduct = Vector3.Cross(currentVertex, nextVertex).magnitude;
+            float triangleArea = 0.5f * crossProduct;
+
+            area += triangleArea;
+            centroid += triangleArea * (currentVertex + nextVertex) / 3f;
+        }
+
+        centroid /= area;
+
+        return centroid;
     }
 }
 
