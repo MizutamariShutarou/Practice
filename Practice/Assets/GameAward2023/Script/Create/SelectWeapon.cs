@@ -9,16 +9,9 @@ public class SelectWeapon : MonoBehaviour
     private GameObject _go = default;
 
     [SerializeField] Material _material;
-    
-    SaveManager _saveManager;
-
-    private void Start()
-    {
-        _saveManager = new SaveManager();
-    }
     public void CreateTaiken()
     {
-        SaveData data = NewSaveManager.Load(NewSaveManager.TAIKENFILEPATH);
+        SaveData data = SaveManager.Load(SaveManager.TAIKENFILEPATH);
         Debug.Log(data._prefabName);
 
         Mesh mesh = new Mesh();
@@ -38,7 +31,7 @@ public class SelectWeapon : MonoBehaviour
     }
     public void CreateSouken()
     {
-        SaveData data = NewSaveManager.Load(NewSaveManager.SOUKENFILEPATH);
+        SaveData data = SaveManager.Load(SaveManager.SOUKENFILEPATH);
   
         Mesh mesh = new Mesh();
         mesh.vertices = data._myVertices;
@@ -59,7 +52,7 @@ public class SelectWeapon : MonoBehaviour
     }
     public void CreateHammer()
     {
-        SaveData data = NewSaveManager.Load(NewSaveManager.HAMMERFILEPATH);
+        SaveData data = SaveManager.Load(SaveManager.HAMMERFILEPATH);
 
         Mesh mesh = new Mesh();
         mesh.vertices = data._myVertices;
@@ -80,7 +73,7 @@ public class SelectWeapon : MonoBehaviour
     }
     public void CreateYari()
     {
-        SaveData data = NewSaveManager.Load(NewSaveManager.YARIFILEPATH);
+        SaveData data = SaveManager.Load(SaveManager.YARIFILEPATH);
         Debug.Log(data._prefabName);
         Debug.Log(data._myVertices);
 
