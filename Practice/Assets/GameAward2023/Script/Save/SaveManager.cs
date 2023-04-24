@@ -1,66 +1,66 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class SaveManager
 {
-    private static string _taikenFilePath;
-
-    public static string Taiken => _taikenFilePath;
-
-    private static string _soukenFilePath;
-
-    public static string Souken => _soukenFilePath;
-
-    private static string _hammerFilePath;
-
-    public static string Hammer => _hammerFilePath;
-
-    private static string _yariFilePath;
-
-    public static string Yari => _yariFilePath;
+    static SaveManager Instance = new SaveManager();
 
     public static List<string> _weaponFileList = new List<string>();
 
-    private SaveData _saveData;
+#if RELEASE
+    const string TAIKENFILEPATH = "Taiken.dat";
+    const string SOUKENFILEPATH = "Souken.dat";
+    const string HAMMERFILEPATH = "Hammer.dat";
+    const string YARIFILEPATH = "Yari.dat";
+#else
+    public const string TAIKENFILEPATH = "Taiken.json";
+    public const string SOUKENFILEPATH = "Souken.json";
+    public const string HAMMERFILEPATH = "Hammer.json";
+    public const string YARIFILEPATH = "Yari.json";
+#endif
+    private SaveData Data;
 
-    public SaveData SaveData => _saveData;
 
-    public void Initialize()
+    public static void Initialize()
     {
-        _taikenFilePath = Application.dataPath + "/TaikenData.json";
-        _soukenFilePath = Application.dataPath + "/SoukenData.json";
-        _hammerFilePath = Application.dataPath + "/HammerData.json";
-        _yariFilePath = Application.dataPath + "/YariData.json";
-        
-        _weaponFileList = new List<string>() { _taikenFilePath, _soukenFilePath, _hammerFilePath, _yariFilePath};
+        //_taikenFilePath = Application.dataPath + "/TaikenData.json";
+        //_soukenFilePath = Application.dataPath + "/SoukenData.json";
+        //_hammerFilePath = Application.dataPath + "/HammerData.json";
+        //_yariFilePath = Application.dataPath + "/YariData.json";
+        _weaponFileList = new List<string>() { TAIKENFILEPATH, SOUKENFILEPATH, HAMMERFILEPATH, YARIFILEPATH };
     }
-
-    public void Save(SaveData saveData, string filePath)
+    static public SaveData Load(string filePath)
     {
-        string json = JsonUtility.ToJson(saveData, true);
-        StreamWriter streamWriter = new StreamWriter(filePath);
-        streamWriter.Write(json);
-        streamWriter.Flush();
-        streamWriter.Close();
-    }
+        Instance.Data = LocalData.Load<SaveData>(filePath);
 
-    public void Load(string filePath)
-    {
-        if (File.Exists(filePath))
+        if (Instance.Data == null)
         {
-            StreamReader streamReader;
-            streamReader = new StreamReader(filePath);
-            string data = streamReader.ReadToEnd();
-            streamReader.Close();
-            _saveData = JsonUtility.FromJson<SaveData>(data);
+            Instance.Data = new SaveData();
         }
+        return Instance.Data;
     }
 
-    public void ResetSaveData(string filePath)
+    static public SaveData GetData(string filePath)
     {
-        _saveData = new SaveData();
-        File.Delete(filePath);
+        if (Instance.Data == null)
+        {
+            Load(filePath);
+        }
+        return Instance.Data;
+    }
+
+    static public void Save(string filePath, SaveData data)
+    {
+        Instance.Data = data;
+        LocalData.Save<SaveData>(filePath, Instance.Data);
+    }
+
+    static public void ResetSaveData(string filePath)
+    {
+        LocalData.ResetSaveData(filePath);
     }
 }
