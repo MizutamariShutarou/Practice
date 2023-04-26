@@ -13,8 +13,11 @@ using System.Collections.Generic;
 /// </summary>
 public class MeshManager : MonoBehaviour
 {
+    /// <summary>
+    /// 重心の位置を表すオブジェクト(後で消す)
+    /// </summary>
     [SerializeField]
-    private GameObject _a;
+    private GameObject _go = default;
 
     [SerializeField, Tooltip("双剣ver")]
     private bool _isSouken = default;
@@ -44,6 +47,8 @@ public class MeshManager : MonoBehaviour
 
     public int NVertices => _nVertices;
 
+    private Vector2 _firstCenterPos = default;
+
     [SerializeField, Tooltip("中心の座標")]
     private Vector2 _centerPos = default;
 
@@ -69,6 +74,8 @@ public class MeshManager : MonoBehaviour
     [SerializeField]
     private List<Color> _setColor = new List<Color>();
 
+    public List<Color> SetColor { get { return _setColor; } }
+
     [ContextMenu("Make mesh from model")]
 
     private void Awake()
@@ -80,6 +87,7 @@ public class MeshManager : MonoBehaviour
 
     void Start()
     {
+        _firstCenterPos = _centerPos;
         foreach (var f in SaveManager._weaponFileList)
         {
             SaveManager.Load(f);
@@ -98,7 +106,6 @@ public class MeshManager : MonoBehaviour
     void Update()
     {
         _myMesh.SetColors(_setColor);
-        _a.transform.position = _centerPos;
         if (Input.GetMouseButtonDown(0))
         {
             Calculation();
@@ -161,6 +168,11 @@ public class MeshManager : MonoBehaviour
 
         _dis = 1000f;
     }
+
+    /// <summary>
+    /// 武器のセーブ
+    /// </summary>
+    /// <param name="weapon"></param>
     public void OnSaveData(string weapon)
     {
         if (weapon == "Taiken")
@@ -197,11 +209,9 @@ public class MeshManager : MonoBehaviour
         }
     }
 
-    public void ChangeScene()
-    {
-        SceneManager.LoadScene("BattleSample");
-    }
-
+    /// <summary>
+    /// 全武器のセーブデータ削除
+    /// </summary>
     public void OnResetSaveData()
     {
         foreach (var f in SaveManager._weaponFileList)
@@ -210,13 +220,29 @@ public class MeshManager : MonoBehaviour
         }
     }
 
+    public void ResetMeshShape()
+    {
+        if (_go == null)
+            return;
+
+        Destroy(_go);
+
+        _centerPos = _firstCenterPos;
+        CreateMesh();
+    }
+
+    public void ChangeScene()
+    {
+        SceneManager.LoadScene("BattleSample");
+    }
+
     public void CreateMesh()
     {
-        GameObject go = new GameObject("WeaponBase");
+        _go = new GameObject("WeaponBase");
 
-        _meshFilter = go.AddComponent<MeshFilter>();
+        _meshFilter = _go.AddComponent<MeshFilter>();
 
-        _meshRenderer = go.AddComponent<MeshRenderer>();
+        _meshRenderer = _go.AddComponent<MeshRenderer>();
 
         _myVertices = new Vector3[_nVertices];
 
@@ -271,9 +297,6 @@ public class MeshManager : MonoBehaviour
         }
 
         _myMesh.SetTriangles(_myTriangles, 0);
-
-        Vector2[] uvs = new Vector2[_nVertices];
-
         _myMesh.SetColors(_setColor);
         _meshFilter.sharedMesh = _myMesh;
         _meshRenderer.material = new Material(Shader.Find("Unlit/VertexColorShader"));
@@ -352,6 +375,11 @@ public class MeshManager : MonoBehaviour
         _meshMaterial.SetInt("GameObject", (int)UnityEngine.Rendering.CullMode.Off);
     }
 
+    /// <summary>
+    /// メッシュの重心を取得する関数
+    /// </summary>
+    /// <param name="vertices"></param>
+    /// <returns></returns>
     private Vector3 GetCentroid(Vector3[] vertices)
     {
         Vector3 centroid = Vector3.zero;
