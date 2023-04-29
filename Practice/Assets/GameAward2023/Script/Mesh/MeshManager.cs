@@ -17,6 +17,9 @@ public class MeshManager : MonoBehaviour
     /// 重心の位置を表すオブジェクト(後で消す)
     /// </summary>
     [SerializeField]
+    private GameObject _jyuusin = default;
+
+    [SerializeField]
     private GameObject _go = default;
 
     [SerializeField, Tooltip("双剣ver")]
@@ -105,6 +108,7 @@ public class MeshManager : MonoBehaviour
     }
     void Update()
     {
+        _jyuusin.transform.position = _centerPos;
         _myMesh.SetColors(_setColor);
         if (Input.GetMouseButtonDown(0))
         {
