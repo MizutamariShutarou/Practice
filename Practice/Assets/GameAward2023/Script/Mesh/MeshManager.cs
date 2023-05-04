@@ -13,6 +13,14 @@ using System.Collections.Generic;
 /// </summary>
 public class MeshManager : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject _parentObj = default;
+
+    [SerializeField]
+    private GameObject _weaponHandle = default;
+
+    private Vector3 _lowestPos = default;
+
     /// <summary>
     /// 重心の位置を表すオブジェクト(後で消す)
     /// </summary>
@@ -138,6 +146,12 @@ public class MeshManager : MonoBehaviour
             }
         }
 
+        if(_indexNum == 2)
+        {
+            Debug.Log($"{_indexNum}は一番下の頂点のため動かせません");
+            return;
+        }
+
         // タップ位置と近い頂点との距離(ti)
         float tiDis = Vector3.Distance(worldPos, _centerPos);
 
@@ -243,6 +257,7 @@ public class MeshManager : MonoBehaviour
     public void CreateMesh()
     {
         _go = new GameObject("WeaponBase");
+        _go.transform.parent = _parentObj.transform.parent;
 
         _meshFilter = _go.AddComponent<MeshFilter>();
 
@@ -306,6 +321,8 @@ public class MeshManager : MonoBehaviour
         _meshRenderer.material = new Material(Shader.Find("Unlit/VertexColorShader"));
         _meshFilter.mesh = _myMesh;
         _meshMaterial.SetInt("GameObject", (int)UnityEngine.Rendering.CullMode.Off);
+
+        _weaponHandle.transform.position = _myVertices[2] - new Vector3(0, 0.5f, 0);
     }
 
     private void CreateSouken(string name, float sX, float sY)
