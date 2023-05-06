@@ -15,17 +15,16 @@ public class SelectWeapon : MonoBehaviour
     public void CreateTaiken()
     {
         SaveData data = SaveManager.Load(SaveManager.TAIKENFILEPATH);
-        Debug.Log(data._prefabName);
+        _weaponHandle.SetActive(true);
 
         Mesh mesh = new Mesh();
         mesh.vertices = data._myVertices;
         mesh.triangles = data._myTriangles;
         mesh.SetColors(data._colorList);
-        //mesh.vertices = _saveManager.SaveData._myVertices;
-        //mesh.triangles = _saveManager.SaveData._myTriangles;
 
         _childObj = new GameObject(data._prefabName);
         _childObj.transform.parent = _weaponObj.transform;
+        _weaponHandle.transform.position = MeshManager.HandlePos;
 
         MeshFilter meshFilter = _childObj.AddComponent<MeshFilter>();
         meshFilter.mesh = mesh;

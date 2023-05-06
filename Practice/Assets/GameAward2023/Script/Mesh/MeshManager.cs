@@ -19,6 +19,10 @@ public class MeshManager : MonoBehaviour
     [SerializeField]
     private GameObject _weaponHandle = default;
 
+    private static Vector3 _handlePos = default;
+
+    public static Vector3 HandlePos => _handlePos;
+
     private Vector3 _lowestPos = default;
 
     /// <summary>
@@ -27,7 +31,6 @@ public class MeshManager : MonoBehaviour
     [SerializeField]
     private GameObject _jyuusin = default;
 
-    [SerializeField]
     private GameObject _go = default;
 
     [SerializeField, Tooltip("‘oŒ•ver")]
@@ -315,6 +318,7 @@ public class MeshManager : MonoBehaviour
             _myTriangles[firstI + 5] = i;
         }
 
+     
         _myMesh.SetTriangles(_myTriangles, 0);
         _myMesh.SetColors(_setColor);
         _meshFilter.sharedMesh = _myMesh;
@@ -322,7 +326,19 @@ public class MeshManager : MonoBehaviour
         _meshFilter.mesh = _myMesh;
         _meshMaterial.SetInt("GameObject", (int)UnityEngine.Rendering.CullMode.Off);
 
-        _weaponHandle.transform.position = _myVertices[2] - new Vector3(0, 0.5f, 0);
+        _lowestPos = _myVertices[0];
+
+        for (int i = 0; i < _myVertices.Length; i++)
+        {
+            if (_lowestPos.y > _myVertices[i].y)
+            {
+                _lowestPos = _myVertices[i];
+            }
+        }
+
+        _handlePos = _lowestPos - new Vector3(0, 0.5f, 0);
+
+        _weaponHandle.transform.position = _handlePos;
     }
 
     private void CreateSouken(string name, float sX, float sY)
