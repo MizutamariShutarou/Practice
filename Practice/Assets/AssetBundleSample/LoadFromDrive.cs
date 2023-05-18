@@ -1,5 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -12,20 +13,23 @@ public class LoadFromDrive : MonoBehaviour
     [SerializeField]
     private Image _image = default;
 
+    private CancellationTokenSource _cts = default;
+    
     [System.Obsolete]
-    void Start()
+    private async void Start()
     {
-        StartCoroutine(DownloadAsset());
+        _cts = new CancellationTokenSource();
+        await DownloadAsset(_cts.Token);
     }
 
     [System.Obsolete]
-    IEnumerator DownloadAsset()
+    private async UniTask DownloadAsset(CancellationToken token)
     {
         using (UnityWebRequest uwr = UnityWebRequestAssetBundle.GetAssetBundle
             ("https://drive.google.com/uc?export=download&id=12X3MlArdcZGZOOFWz6VWmCPEU1q2km0Z"))
         { 
         
-        yield return uwr.SendWebRequest();
+        await uwr.SendWebRequest();
 
             if (uwr.isNetworkError || uwr.isHttpError)
             {
@@ -33,7 +37,6 @@ public class LoadFromDrive : MonoBehaviour
             }
             else
             {
-                // Get downloaded asset bundle
                 AssetBundle bundle = DownloadHandlerAssetBundle.GetContent(uwr);
                 var sprite = bundle.LoadAsset<Sprite>(_assetName);
                 _image.sprite = sprite;
