@@ -12,7 +12,7 @@ public class ChangeScene : MonoBehaviour
             SceneChange();
         }
     }
-    private void SceneChange()
+    private async void SceneChange()
     {
         _loadSceneManager.ChangeScene("GameScene");
         Debug.Log("1");

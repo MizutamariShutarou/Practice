@@ -10,13 +10,16 @@ public class LoadSceneManager : MonoBehaviour
     [SerializeField] Image _image = default;
 
     CancellationTokenSource _cts = default;
-    public async void ChangeScene(string name)
+    public async UniTask ChangeScene(string name)
     {
         _cts = new CancellationTokenSource();
-        await LoadSceneExecute(name, _cts.Token); // awaitを付けなかったら3➔1➔2
+        await LoadSceneExecute(name, _cts.Token);
         Debug.Log("3");
     }
-    private async UniTask LoadSceneExecute(string name, CancellationToken ct)
+
+    // UniTask => 例外がcatchされないでGCの時に回収される
+    // UniTaskVoid => UniTaskに比べて軽いし、例外がUniTaskSchedulerに格納される
+    private async UniTask LoadSceneExecute(string name, CancellationToken ct) 
     {
         AsyncOperation operation = SceneManager.LoadSceneAsync(name);
         operation.allowSceneActivation = false;
