@@ -4,11 +4,14 @@ using UnityEngine.UI;
 
 public class LoadFromFileExample : MonoBehaviour
 {
-    [SerializeField] private Image image;
+    [SerializeField, Tooltip("AssetBundleに格納されているスプライトを張り付けるImage")] 
+    private Image _image = default
+        ;
     private void Start()
     {
-        // AssetBundleのメタ情報のロード
-        var assetBundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, "samplefolder/sample"));
+        // AssetBundleのメタ情報をロード
+        var assetBundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, "myassetBundle"));
+
         if (assetBundle == null)
         {
             Debug.Log("Failed to load AssetBundle!");
@@ -16,9 +19,9 @@ public class LoadFromFileExample : MonoBehaviour
         }
 
         // テクスチャをメモリにロード
-        var sprite = assetBundle.LoadAsset<Sprite>("assetbundle");
+        var sprite = assetBundle.LoadAsset<Sprite>("AssetBundleSample");
 
-        image.sprite = sprite;
+        _image.sprite = sprite;
 
         // AssetBundleのメタ情報をアンロード
         assetBundle.Unload(false);

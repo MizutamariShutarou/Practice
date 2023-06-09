@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -26,7 +25,7 @@ public class LoadFromDrive : MonoBehaviour
     private async UniTask DownloadAsset(CancellationToken token)
     {
         using (UnityWebRequest uwr = UnityWebRequestAssetBundle.GetAssetBundle
-            ("https://drive.google.com/uc?export=download&id=12X3MlArdcZGZOOFWz6VWmCPEU1q2km0Z"))
+            ("https://drive.google.com/uc?export=download&id=1ek9KGX10MTtNDXxyrBJ7d7FXk1eHmulO"))
         { 
         
         await uwr.SendWebRequest();
@@ -42,5 +41,6 @@ public class LoadFromDrive : MonoBehaviour
                 _image.sprite = sprite;
             }
         }
+        
     }
 }
